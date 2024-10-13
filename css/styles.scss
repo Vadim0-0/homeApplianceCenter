@@ -433,7 +433,7 @@
 
       &__blocks {
         display: flex;
-        overflow: scroll;
+        overflow-x: scroll;
 
         &-block {
           display: block;
@@ -441,10 +441,6 @@
 
           &:not(:last-child) {
             margin-right: 24px;
-          }
-
-          &:hover {
-            transform: scale(105%);
           }
 
           &__img {
@@ -581,6 +577,11 @@
         left: 50%;
         bottom: 0;
         transform: translateX(-50%);
+        background-color: var(--substrate);
+
+        & img {
+          mix-blend-mode: multiply;
+        }
       }
 
       &:hover {
