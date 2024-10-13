@@ -182,7 +182,12 @@ button {
     margin-bottom: 16px;
     padding: 25px;
     border-radius: 8px;
+    background: url("path_to_image");
     background-color: var(--substrate);
+
+    & img {
+      mix-blend-mode: multiply;
+    }
   }
 
   &__article {
