@@ -898,7 +898,11 @@ button {
   margin-bottom: 16px;
   padding: 25px;
   border-radius: 8px;
+  background: url("path_to_image");
   background-color: var(--substrate);
+}
+.product-card__img img {
+  mix-blend-mode: multiply;
 }
 .product-card__article p.discount {
   display: block;
@@ -1787,7 +1791,7 @@ button {
 }
 .index-blog__content-bottom__blocks {
   display: flex;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 .index-blog__content-bottom__blocks-block {
   display: block;
@@ -1795,9 +1799,6 @@ button {
 }
 .index-blog__content-bottom__blocks-block:not(:last-child) {
   margin-right: 24px;
-}
-.index-blog__content-bottom__blocks-block:hover {
-  transform: scale(105%);
 }
 .index-blog__content-bottom__blocks-block__img {
   border-radius: 20px;
@@ -1916,6 +1917,10 @@ button {
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
+  background-color: var(--substrate);
+}
+.tvAndElectronics-hero__content-card__img img {
+  mix-blend-mode: multiply;
 }
 .tvAndElectronics-hero__content-card:hover {
   transform: scale(105%);
