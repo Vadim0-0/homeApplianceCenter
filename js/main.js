@@ -130,11 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentIndex = 0;
 
-  // Проверяем ширину экрана
-  function isMobileScreen() {
-    return window.matchMedia('(max-width: 768px)').matches;
-  }
-
   // Получаем ширину и отступ блока
   function getCardWidthWithMargin() {
     const cardStyle = getComputedStyle(cards[0]);
@@ -173,8 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let isSwiping = false;
 
   function addSwipeListeners() {
-    if (!isMobileScreen()) return;
-
     cardsContainer.addEventListener('mousedown', startSwipe);
     cardsContainer.addEventListener('touchstart', startSwipe);
 
@@ -185,19 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
     cardsContainer.addEventListener('touchend', endSwipe);
 
     cardsContainer.addEventListener('mouseleave', endSwipe);
-  }
-
-  function removeSwipeListeners() {
-    cardsContainer.removeEventListener('mousedown', startSwipe);
-    cardsContainer.removeEventListener('touchstart', startSwipe);
-
-    cardsContainer.removeEventListener('mousemove', handleSwipe);
-    cardsContainer.removeEventListener('touchmove', handleSwipe);
-
-    cardsContainer.removeEventListener('mouseup', endSwipe);
-    cardsContainer.removeEventListener('touchend', endSwipe);
-
-    cardsContainer.removeEventListener('mouseleave', endSwipe);
   }
 
   function startSwipe(e) {
@@ -221,20 +201,22 @@ document.addEventListener('DOMContentLoaded', () => {
     isSwiping = false;
   }
 
-  // Проверяем изменение ширины экрана
-  function checkScreenSize() {
-    if (isMobileScreen()) {
-      addSwipeListeners();
-    } else {
-      removeSwipeListeners();
-      cardsContainer.style.transform = ''; // Сбросим позицию на больших экранах
-    }
+  // Сбрасываем позицию для десктопа
+  function resetPosition() {
+    cardsContainer.style.transform = '';
   }
 
-  // Запускаем проверку при загрузке и изменении размера окна
-  checkScreenSize();
-  window.addEventListener('resize', checkScreenSize);
+  // Инициализация событий
+  function initialize() {
+    addSwipeListeners();
+    resetPosition();
+  }
+
+  // Запуск при загрузке
+  initialize();
+  window.addEventListener('resize', resetPosition);
 });
+
 
 /* index-recommendations */
 
