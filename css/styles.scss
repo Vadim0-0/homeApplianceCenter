@@ -1141,7 +1141,7 @@
             margin-bottom: 10px;
             width: 90px;
             height: 18px;
-            background-image: url(/img/star-off.svg);
+            background-image: url(../img/star-off.svg);
             background-size: 18px auto;
 
             & input {
@@ -1154,7 +1154,7 @@
               font-size: inherit;
 
               &:checked {
-                background-image: url(/img/star-on.svg);
+                background-image: url(../img/star-on.svg);
                 background-size: 18px auto;
               }
 
@@ -1285,10 +1285,10 @@
         &-star {
           width: 18px;
           height: 18px;
-          background-image: url(/img/star-off.svg);
+          background-image: url(../img/star-off.svg);
 
           &.on {
-            background-image: url(/img/star-on.svg);
+            background-image: url(../img/star-on.svg);
           }
         }
 
@@ -1696,10 +1696,10 @@
                   width: 20px;
                   height: 20px;
                   appearance: none;
-                  background-image: url(/img/check-off.png);
+                  background-image: url(../img/check-off.png);
 
                   &:checked {
-                    background-image: url(/img/check-on.png);
+                    background-image: url(../img/check-on.png);
                   }
                 }
 
@@ -2024,10 +2024,10 @@
                   &__star {
                     width: 18px;
                     height: 18px;
-                    background-image: url(/img/star-off.svg);
+                    background-image: url(../img/star-off.svg);
 
                     &.on {
-                      background-image: url(/img/star-on.svg);
+                      background-image: url(../img/star-on.svg);
                     }
                   }
                 }
@@ -2087,10 +2087,10 @@
                   &__star {
                     width: 18px;
                     height: 18px;
-                    background-image: url(/img/star-off.svg);
+                    background-image: url(../img/star-off.svg);
 
                     &.on {
-                      background-image: url(/img/star-on.svg);
+                      background-image: url(../img/star-on.svg);
                     }
                   }
                 }
@@ -2211,7 +2211,7 @@
 
     &-blocks {
       display: flex;
-      overflow: hidden;
+      overflow-x: hidden;
 
       & .product-card {
         min-width: 260px;
@@ -2245,6 +2245,10 @@
 
 /* Доставка и оплата */
 
+.deliveryAndPeyment-header {
+  margin-bottom: 55px;
+}
+
 .deliveryAndPeyment-payment {
   padding-bottom: 102px;
 
@@ -2257,7 +2261,7 @@
 
     &-list {
       @include grid-ColumnsEqually(3, 24px);
-      margin-bottom: 32px;
+      margin-bottom: 35px;
 
       &__item {
         @include flex-center(24px);
@@ -2319,10 +2323,14 @@
               border-bottom: 2px solid var(--yellow);
             }
           }
+
+          &:not(:last-child) {
+            margin-bottom: 28px;
+          }
         }
       }
 
-      & img {
+      &__img {
         position: absolute;
         right: 0;
         top: 0;
@@ -2343,13 +2351,17 @@
         padding-bottom: 52px;
         margin-bottom: 52px;
         border-bottom: 1px solid #eee;
+
+        & p:not(:last-child) {
+          margin-bottom: 6px;
+        }
       }
 
       &__bottom {
         @include grid-ColumnsEqually(2, 52px);
 
         & p:not(:last-child) {
-          margin-bottom: 20px;
+          margin-bottom: 32px;
         }
       }
     }
@@ -2397,6 +2409,21 @@
       }
     }
   }
+
+  /* Доставка и оплата */
+
+  .deliveryAndPeyment-payment {
+
+    &__content {
+
+      &-info {
+
+        &__img {
+          display: none;
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 1200px) {
@@ -2431,6 +2458,20 @@
         display: none;
       }
 
+    }
+  }
+
+  /* Доставка и оплата */
+
+  .deliveryAndPeyment-payment {
+
+    &__content {
+
+      &-list {
+
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 
@@ -2584,6 +2625,18 @@
       &-bottom {
         position: relative;
 
+        & button {
+          top: 28%;
+
+            &.prev {
+              left: 7px;
+            }
+
+            &.next {
+              right: 7px;
+            }
+        }
+
         &__list {
           overflow: hidden;
           & .product-card {
@@ -2714,6 +2767,22 @@
 
       &-bottom {
         height: 547px;
+      }
+
+      &-top {
+        &__btns {
+          & button {
+            opacity: 0;
+
+            &.prev {
+              left: 0;
+            }
+
+            &.next {
+              right: 0;
+            }
+          }
+        }
       }
     }
   }
@@ -3057,6 +3126,12 @@
             justify-content: center;
             max-width: inherit;
           }
+
+          &-lower {
+            & p {
+              display: none;
+            }
+          }
         }
 
         &__bottom {
@@ -3211,6 +3286,94 @@
       }
     }
   }
+
+  /* Доставка и оплата */
+
+  .deliveryAndPeyment-header {
+    margin-bottom: 36px;
+  }
+
+  .deliveryAndPeyment-payment {
+    padding-bottom: 71px;
+
+    &__content {
+
+      &  h2 {
+        font-size: 20px;
+      }
+
+      &-list {
+        gap: 12px;
+        margin-bottom: 25px;
+
+        &__item {
+          padding: 26px 0;
+
+          & img {
+            width: 17%;
+          }
+
+          &-article {
+
+            max-width: 218px;
+
+            & h3 {
+              font-size: 18px;
+            }
+
+            & p {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+
+      &-info {
+        margin-bottom: 39px;
+        padding: 24px 16px 251px 16px;
+
+        &__article {
+
+          & h3 {
+            font-size: 20px
+          }
+
+          & p {
+            font-size: 16px
+          }
+        }
+
+        &__img {
+          @include flex-center;
+          width: 100%;
+          bottom: -110px;
+          top: inherit;
+          right: inherit;
+        }
+      }
+
+      &-descrs {
+
+        &__top {
+          display: flex;
+          flex-direction: column;
+          gap: 0px;
+          padding-bottom: 32px;
+          margin-bottom: 32px;
+
+          & p:not(:last-child) {
+            margin-bottom: 0px;
+          }
+        }
+
+        &__bottom {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+
 }
 
 @media (max-width: 450px) {
@@ -3228,24 +3391,6 @@
 
         &__timer {
           gap: 6px;
-        }
-      }
-
-      &-bottom {
-
-        &__btns {
-
-          & button {
-            top: 28%;
-
-            &.prev {
-              left: 7px;
-            }
-
-            &.next {
-              right: 7px;
-            }
-          }
         }
       }
     }
