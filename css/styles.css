@@ -2387,7 +2387,7 @@ button {
   margin-bottom: 10px;
   width: 90px;
   height: 18px;
-  background-image: url(/img/star-off.svg);
+  background-image: url(../img/star-off.svg);
   background-size: 18px auto;
 }
 .addReview__content-info__form-rating__group input {
@@ -2402,7 +2402,7 @@ button {
   font-size: inherit;
 }
 .addReview__content-info__form-rating__group input:checked {
-  background-image: url(/img/star-on.svg);
+  background-image: url(../img/star-on.svg);
   background-size: 18px auto;
 }
 .addReview__content-info__form-rating__group input:nth-of-type(1) {
@@ -2523,10 +2523,10 @@ button {
 .productCard-hedaer__bottom-info__estimations-star {
   width: 18px;
   height: 18px;
-  background-image: url(/img/star-off.svg);
+  background-image: url(../img/star-off.svg);
 }
 .productCard-hedaer__bottom-info__estimations-star.on {
-  background-image: url(/img/star-on.svg);
+  background-image: url(../img/star-on.svg);
 }
 .productCard-hedaer__bottom-info__estimations p {
   margin-left: 6px;
@@ -2895,10 +2895,10 @@ button {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  background-image: url(/img/check-off.png);
+  background-image: url(../img/check-off.png);
 }
 .productCard-hero__content-purchase__bottom-choice__selection-dropdown__label input:checked {
-  background-image: url(/img/check-on.png);
+  background-image: url(../img/check-on.png);
 }
 .productCard-hero__content-purchase__bottom-choice__selection-dropdown__label p {
   font-family: var(--second-family);
@@ -3165,10 +3165,10 @@ button {
 .productCard-info__content-bottom__reviews-content__info-review__content-estimations__star {
   width: 18px;
   height: 18px;
-  background-image: url(/img/star-off.svg);
+  background-image: url(../img/star-off.svg);
 }
 .productCard-info__content-bottom__reviews-content__info-review__content-estimations__star.on {
-  background-image: url(/img/star-on.svg);
+  background-image: url(../img/star-on.svg);
 }
 .productCard-info__content-bottom__reviews-content__info-review__content p {
   font-weight: 400;
@@ -3220,10 +3220,10 @@ button {
 .productCard-info__content-bottom__reviews-content__block-list__item-estimations__star {
   width: 18px;
   height: 18px;
-  background-image: url(/img/star-off.svg);
+  background-image: url(../img/star-off.svg);
 }
 .productCard-info__content-bottom__reviews-content__block-list__item-estimations__star.on {
-  background-image: url(/img/star-on.svg);
+  background-image: url(../img/star-on.svg);
 }
 .productCard-info__content-bottom__reviews-content__block-list__item-line {
   width: 100%;
@@ -3313,7 +3313,7 @@ button {
 }
 .productCard-recommendations__content-blocks {
   display: flex;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .productCard-recommendations__content-blocks .product-card {
   min-width: 260px;
@@ -3335,6 +3335,10 @@ button {
 }
 
 /* Доставка и оплата */
+.deliveryAndPeyment-header {
+  margin-bottom: 55px;
+}
+
 .deliveryAndPeyment-payment {
   padding-bottom: 102px;
 }
@@ -3346,7 +3350,7 @@ button {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 35px;
 }
 .deliveryAndPeyment-payment__content-list__item {
   display: flex;
@@ -3404,7 +3408,10 @@ button {
 .deliveryAndPeyment-payment__content-info__article p span.underline {
   border-bottom: 2px solid var(--yellow);
 }
-.deliveryAndPeyment-payment__content-info img {
+.deliveryAndPeyment-payment__content-info__article p:not(:last-child) {
+  margin-bottom: 28px;
+}
+.deliveryAndPeyment-payment__content-info__img {
   position: absolute;
   right: 0;
   top: 0;
@@ -3423,13 +3430,16 @@ button {
   margin-bottom: 52px;
   border-bottom: 1px solid #eee;
 }
+.deliveryAndPeyment-payment__content-descrs__top p:not(:last-child) {
+  margin-bottom: 6px;
+}
 .deliveryAndPeyment-payment__content-descrs__bottom {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 52px;
 }
 .deliveryAndPeyment-payment__content-descrs__bottom p:not(:last-child) {
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
 /* Media */
@@ -3457,6 +3467,10 @@ button {
   .productCard-hero__content-images__container button.next {
     transform: rotate(-90deg);
   }
+  /* Доставка и оплата */
+  .deliveryAndPeyment-payment__content-info__img {
+    display: none;
+  }
 }
 @media (max-width: 1200px) {
   /* Каталог */
@@ -3478,6 +3492,11 @@ button {
   }
   .productCard-hero__content-specifications {
     display: none;
+  }
+  /* Доставка и оплата */
+  .deliveryAndPeyment-payment__content-list {
+    display: flex;
+    flex-direction: column;
   }
 }
 @media (max-width: 1111px) {
@@ -3566,6 +3585,15 @@ button {
   .index-hero__content-bottom {
     position: relative;
   }
+  .index-hero__content-bottom button {
+    top: 28%;
+  }
+  .index-hero__content-bottom button.prev {
+    left: 7px;
+  }
+  .index-hero__content-bottom button.next {
+    right: 7px;
+  }
   .index-hero__content-bottom__list {
     overflow: hidden;
   }
@@ -3650,6 +3678,15 @@ button {
   }
   .index-top__content-bottom {
     height: 547px;
+  }
+  .index-top__content-top__btns button {
+    opacity: 0;
+  }
+  .index-top__content-top__btns button.prev {
+    left: 0;
+  }
+  .index-top__content-top__btns button.next {
+    right: 0;
   }
   .index-advantages__content {
     display: flex;
@@ -3918,6 +3955,9 @@ button {
     justify-content: center;
     max-width: inherit;
   }
+  .productCard-hero__content-purchase__top-lower p {
+    display: none;
+  }
   .productCard-hero__content-purchase__bottom {
     margin-bottom: 52px;
   }
@@ -4025,6 +4065,69 @@ button {
   .productCard-recommendations__content-btns button.next {
     right: 0;
   }
+  /* Доставка и оплата */
+  .deliveryAndPeyment-header {
+    margin-bottom: 36px;
+  }
+  .deliveryAndPeyment-payment {
+    padding-bottom: 71px;
+  }
+  .deliveryAndPeyment-payment__content h2 {
+    font-size: 20px;
+  }
+  .deliveryAndPeyment-payment__content-list {
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+  .deliveryAndPeyment-payment__content-list__item {
+    padding: 26px 0;
+  }
+  .deliveryAndPeyment-payment__content-list__item img {
+    width: 17%;
+  }
+  .deliveryAndPeyment-payment__content-list__item-article {
+    max-width: 218px;
+  }
+  .deliveryAndPeyment-payment__content-list__item-article h3 {
+    font-size: 18px;
+  }
+  .deliveryAndPeyment-payment__content-list__item-article p {
+    font-size: 16px;
+  }
+  .deliveryAndPeyment-payment__content-info {
+    margin-bottom: 39px;
+    padding: 24px 16px 251px 16px;
+  }
+  .deliveryAndPeyment-payment__content-info__article h3 {
+    font-size: 20px;
+  }
+  .deliveryAndPeyment-payment__content-info__article p {
+    font-size: 16px;
+  }
+  .deliveryAndPeyment-payment__content-info__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+    width: 100%;
+    bottom: -110px;
+    top: inherit;
+    right: inherit;
+  }
+  .deliveryAndPeyment-payment__content-descrs__top {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+  }
+  .deliveryAndPeyment-payment__content-descrs__top p:not(:last-child) {
+    margin-bottom: 0px;
+  }
+  .deliveryAndPeyment-payment__content-descrs__bottom {
+    display: flex;
+    flex-direction: column;
+  }
 }
 @media (max-width: 450px) {
   /* index */
@@ -4039,15 +4142,6 @@ button {
   }
   .index-hero__content-top__timer {
     gap: 6px;
-  }
-  .index-hero__content-bottom__btns button {
-    top: 28%;
-  }
-  .index-hero__content-bottom__btns button.prev {
-    left: 7px;
-  }
-  .index-hero__content-bottom__btns button.next {
-    right: 7px;
   }
   .index-categories {
     padding: 34px 0 50px 0;
