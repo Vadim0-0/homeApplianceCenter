@@ -75,24 +75,44 @@ document.addEventListener('DOMContentLoaded', () => {
       return productCards[0].offsetWidth + parseInt(getComputedStyle(productCards[0]).marginRight);
   }
 
+  // Функция плавной прокрутки
+  function smoothScroll(targetScrollLeft) {
+      const startScrollLeft = productList.scrollLeft;
+      const distanceToScroll = targetScrollLeft - startScrollLeft;
+      const duration = 500; // Длительность анимации в мс
+      let startTime = null;
+
+      function animationStep(currentTime) {
+          if (!startTime) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / duration, 1); // Прогресс от 0 до 1
+          productList.scrollLeft = startScrollLeft + distanceToScroll * easeInOutQuad(progress);
+
+          if (timeElapsed < duration) {
+              requestAnimationFrame(animationStep);
+          }
+      }
+
+      requestAnimationFrame(animationStep);
+  }
+
+  // Функция плавного ускорения и замедления
+  function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
   // Обработчик события для прокрутки влево
   function scrollToPrev() {
       const cardWidth = getCardWidth();
-      productList.scrollBy({
-          top: 0,
-          left: -cardWidth,
-          behavior: 'smooth' // Плавная прокрутка
-      });
+      const targetScrollLeft = productList.scrollLeft - cardWidth;
+      smoothScroll(Math.max(targetScrollLeft, 0)); // Не позволяем прокрутить за пределы
   }
 
   // Обработчик события для прокрутки вправо
   function scrollToNext() {
       const cardWidth = getCardWidth();
-      productList.scrollBy({
-          top: 0,
-          left: cardWidth,
-          behavior: 'smooth' // Плавная прокрутка
-      });
+      const targetScrollLeft = productList.scrollLeft + cardWidth;
+      smoothScroll(Math.min(targetScrollLeft, productList.scrollWidth - productList.offsetWidth)); // Не позволяем прокрутить за пределы
   }
 
   // Добавление обработчиков событий для кнопок
@@ -113,13 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
   productList.addEventListener('touchend', () => {
       const diffX = startX - endX; // Находим разницу между начальной и конечной позициями
 
-      if (diffX > 50) { // Свайп вправо
+      if (diffX > 50) { // Свайп влево
           scrollToNext();
-      } else if (diffX < -50) { // Свайп влево
+      } else if (diffX < -50) { // Свайп вправо
           scrollToPrev();
       }
   });
 });
+
 
 /* index-categories */
 
@@ -351,34 +372,58 @@ document.addEventListener('DOMContentLoaded', () => {
   let blockWidth = blocks[0].offsetWidth + parseFloat(getComputedStyle(blocks[0]).marginRight);
   let currentIndex = 0;
 
+  // Функция для плавной прокрутки
+  const smoothScrollToBlock = (targetScrollLeft) => {
+      const startScrollLeft = scrollContainer.scrollLeft;
+      const distanceToScroll = targetScrollLeft - startScrollLeft;
+      const duration = 500; // Длительность анимации в миллисекундах
+      let startTime = null;
+
+      const animationStep = (currentTime) => {
+          if (!startTime) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / duration, 1); // Прогресс от 0 до 1
+          scrollContainer.scrollLeft = startScrollLeft + distanceToScroll * easeInOutQuad(progress);
+
+          if (timeElapsed < duration) {
+              requestAnimationFrame(animationStep);
+          }
+      };
+
+      requestAnimationFrame(animationStep);
+  };
+
+  // Функция для плавного ускорения и замедления
+  const easeInOutQuad = (t) => {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  };
+
   // Функция для скролла к блоку
   const scrollToBlock = (index) => {
-    scrollContainer.scrollTo({
-      left: blockWidth * index,
-      behavior: 'smooth'
-    });
+      const targetScrollLeft = blockWidth * index;
+      smoothScrollToBlock(targetScrollLeft);
   };
 
   // Обновление ширины блока при изменении размера окна
   const updateBlockWidth = () => {
-    blockWidth = blocks[0].offsetWidth + parseFloat(getComputedStyle(blocks[0]).marginRight);
+      blockWidth = blocks[0].offsetWidth + parseFloat(getComputedStyle(blocks[0]).marginRight);
   };
 
   window.addEventListener('resize', updateBlockWidth);
 
   // Листание по кнопкам
   prevBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      scrollToBlock(currentIndex);
-    }
+      if (currentIndex > 0) {
+          currentIndex--;
+          scrollToBlock(currentIndex);
+      }
   });
 
   nextBtn.addEventListener('click', () => {
-    if (currentIndex < blocks.length - 1) {
-      currentIndex++;
-      scrollToBlock(currentIndex);
-    }
+      if (currentIndex < blocks.length - 1) {
+          currentIndex++;
+          scrollToBlock(currentIndex);
+      }
   });
 
   // Свайп листание
@@ -386,37 +431,38 @@ document.addEventListener('DOMContentLoaded', () => {
   let isDragging = false;
 
   scrollContainer.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    isDragging = true;
+      startX = e.touches[0].clientX;
+      isDragging = true;
   });
 
   scrollContainer.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
+      if (!isDragging) return;
 
-    const currentX = e.touches[0].clientX;
-    const diffX = startX - currentX;
+      const currentX = e.touches[0].clientX;
+      const diffX = startX - currentX;
 
-    if (diffX > 50) {
-      // Свайп влево
-      if (currentIndex < blocks.length - 1) {
-        currentIndex++;
-        scrollToBlock(currentIndex);
+      if (diffX > 50) {
+          // Свайп влево
+          if (currentIndex < blocks.length - 1) {
+              currentIndex++;
+              scrollToBlock(currentIndex);
+          }
+          isDragging = false;
+      } else if (diffX < -50) {
+          // Свайп вправо
+          if (currentIndex > 0) {
+              currentIndex--;
+              scrollToBlock(currentIndex);
+          }
+          isDragging = false;
       }
-      isDragging = false;
-    } else if (diffX < -50) {
-      // Свайп вправо
-      if (currentIndex > 0) {
-        currentIndex--;
-        scrollToBlock(currentIndex);
-      }
-      isDragging = false;
-    }
   });
 
   scrollContainer.addEventListener('touchend', () => {
-    isDragging = false;
+      isDragging = false;
   });
 });
+
 
 /* index-top - top */
 
@@ -439,13 +485,43 @@ document.addEventListener('DOMContentLoaded', () => {
     progressIndicator.style.width = `${scrollPercentage}%`;
   }
 
+  // Функция плавной прокрутки
+  function smoothScroll(targetScrollLeft) {
+    const startScrollLeft = scrollContainer.scrollLeft;
+    const distanceToScroll = targetScrollLeft - startScrollLeft;
+    const duration = 300; // Продолжительность анимации в мс
+    let startTime = null;
+
+    function animationStep(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1); // Прогресс от 0 до 1
+      scrollContainer.scrollLeft = startScrollLeft + distanceToScroll * easeInOutQuad(progress);
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animationStep);
+      } else {
+        updateProgress();  // Обновляем индикатор прогресса после завершения анимации
+      }
+    }
+
+    requestAnimationFrame(animationStep);
+  }
+
+  // Функция плавного ускорения и замедления
+  function easeInOutQuad(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
   // Листание по кнопкам
   nextBtn.addEventListener('click', () => {
-    scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    let targetScrollLeft = scrollContainer.scrollLeft + scrollAmount;
+    smoothScroll(Math.min(targetScrollLeft, totalScrollWidth));  // Не позволяем прокрутить за пределы контейнера
   });
 
   prevBtn.addEventListener('click', () => {
-    scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    let targetScrollLeft = scrollContainer.scrollLeft - scrollAmount;
+    smoothScroll(Math.max(targetScrollLeft, 0));  // Не позволяем прокрутить в отрицательную сторону
   });
 
   // Обновление индикатора при скролле
@@ -464,6 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const touch = e.touches[0];
     const moveX = touch.pageX - startX;
     scrollContainer.scrollLeft = scrollStart - moveX;
+    updateProgress();  // Обновляем прогресс при свайпе
   });
 
   // Обновление размеров при изменении окна
@@ -475,6 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateProgress();  // Обновляем прогресс после изменения размеров
   });
 });
+
 
 /* index-top - bottom */
 
@@ -573,6 +651,34 @@ document.addEventListener('DOMContentLoaded', () => {
     progressIndicator.style.width = `${scrollPercentage}%`;
   }
 
+  // Функция плавной прокрутки
+  function smoothScroll(targetScrollLeft) {
+    const startScrollLeft = scrollContainer.scrollLeft;
+    const distanceToScroll = targetScrollLeft - startScrollLeft;
+    const duration = 300; // Продолжительность анимации в мс
+    let startTime = null;
+
+    function animationStep(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1); // Прогресс от 0 до 1
+      scrollContainer.scrollLeft = startScrollLeft + distanceToScroll * easeInOutQuad(progress);
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animationStep);
+      } else {
+        updateProgress();  // Обновляем индикатор прогресса после завершения анимации
+      }
+    }
+
+    requestAnimationFrame(animationStep);
+  }
+
+  // Функция плавного ускорения и замедления
+  function easeInOutQuad(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
   // Обновление индикатора при скролле
   scrollContainer.addEventListener('scroll', updateProgress);
 
@@ -589,6 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const touch = e.touches[0];
     const moveX = touch.pageX - startX;
     scrollContainer.scrollLeft = scrollStart - moveX;
+    updateProgress();  // Обновляем прогресс при свайпе
   });
 
   // Обновление размеров при изменении окна
@@ -1039,24 +1146,44 @@ document.addEventListener('DOMContentLoaded', () => {
       return productCards[0].offsetWidth + parseInt(getComputedStyle(productCards[0]).marginRight);
   }
 
+  // Функция плавной прокрутки
+  function smoothScroll(targetScrollLeft) {
+      const startScrollLeft = productList.scrollLeft;
+      const distanceToScroll = targetScrollLeft - startScrollLeft;
+      const duration = 300; // Длительность анимации в мс
+      let startTime = null;
+
+      function animationStep(currentTime) {
+          if (!startTime) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / duration, 1); // Прогресс от 0 до 1
+          productList.scrollLeft = startScrollLeft + distanceToScroll * easeInOutQuad(progress);
+
+          if (timeElapsed < duration) {
+              requestAnimationFrame(animationStep);
+          }
+      }
+
+      requestAnimationFrame(animationStep);
+  }
+
+  // Функция плавного ускорения и замедления
+  function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
   // Обработчик события для прокрутки влево
   function scrollToPrev() {
       const cardWidth = getCardWidth();
-      productList.scrollBy({
-          top: 0,
-          left: -cardWidth,
-          behavior: 'smooth' // Плавная прокрутка
-      });
+      const targetScrollLeft = productList.scrollLeft - cardWidth;
+      smoothScroll(Math.max(targetScrollLeft, 0)); // Не позволяем прокрутить за пределы
   }
 
   // Обработчик события для прокрутки вправо
   function scrollToNext() {
       const cardWidth = getCardWidth();
-      productList.scrollBy({
-          top: 0,
-          left: cardWidth,
-          behavior: 'smooth' // Плавная прокрутка
-      });
+      const targetScrollLeft = productList.scrollLeft + cardWidth;
+      smoothScroll(Math.min(targetScrollLeft, productList.scrollWidth - productList.offsetWidth)); // Не позволяем прокрутить за пределы
   }
 
   // Добавление обработчиков событий для кнопок
@@ -1084,6 +1211,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   });
 });
+
 
 /* Катрочка товара - появление блока для отзыва по нажатии на кнопку */
 
@@ -1169,23 +1297,44 @@ document.addEventListener('DOMContentLoaded', () => {
       progressBar.style.width = `${scrollPercentage}%`;
   }
 
-  // Обработчики событий для кнопок
-  function scrollToPrev() {
-      const cardWidth = getCardWidth();
-      productList.scrollBy({
-          top: 0,
-          left: -cardWidth,
-          behavior: 'smooth'
-      });
+  // Функция плавной прокрутки
+  function smoothScroll(targetScrollLeft) {
+      const startScrollLeft = productList.scrollLeft;
+      const distanceToScroll = targetScrollLeft - startScrollLeft;
+      const duration = 300; // Длительность анимации в мс
+      let startTime = null;
+
+      function animationStep(currentTime) {
+          if (!startTime) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / duration, 1); // Прогресс от 0 до 1
+          productList.scrollLeft = startScrollLeft + distanceToScroll * easeInOutQuad(progress);
+
+          if (timeElapsed < duration) {
+              requestAnimationFrame(animationStep);
+          }
+      }
+
+      requestAnimationFrame(animationStep);
   }
 
+  // Функция плавного ускорения и замедления
+  function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
+  // Обработчик события для прокрутки влево
+  function scrollToPrev() {
+      const cardWidth = getCardWidth();
+      const targetScrollLeft = Math.max(productList.scrollLeft - cardWidth, 0);
+      smoothScroll(targetScrollLeft);
+  }
+
+  // Обработчик события для прокрутки вправо
   function scrollToNext() {
       const cardWidth = getCardWidth();
-      productList.scrollBy({
-          top: 0,
-          left: cardWidth,
-          behavior: 'smooth'
-      });
+      const targetScrollLeft = Math.min(productList.scrollLeft + cardWidth, getTotalWidth() - productList.offsetWidth);
+      smoothScroll(targetScrollLeft);
   }
 
   // Добавление событий для кнопок
@@ -1227,6 +1376,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Устанавливаем начальный прогресс
   updateProgressBar();
 });
+
 
 /* Катрочка товара - Мобильная версия переключения */
 
