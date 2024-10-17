@@ -1839,15 +1839,15 @@ button {
   font-size: 12px;
   line-height: 150%;
 }
-.index-blog__content-bottom__blocks-block__article-top span.orange {
+.index-blog__content-bottom__blocks-block__article-top span.recommendations {
   color: #e96c08;
   background-color: #fcf0e6;
 }
-.index-blog__content-bottom__blocks-block__article-top span.grey {
+.index-blog__content-bottom__blocks-block__article-top span.useful {
   color: var(--black);
   background-color: #f0f0f0;
 }
-.index-blog__content-bottom__blocks-block__article-top span.yellow {
+.index-blog__content-bottom__blocks-block__article-top span.best {
   color: #d9b700;
   background-color: #fffad1;
 }
@@ -3447,6 +3447,407 @@ button {
   margin-bottom: 32px;
 }
 
+/* Магазины и контакты */
+.shops-header {
+  margin-bottom: 48px;
+}
+
+.shops-hero {
+  padding-bottom: 102px;
+}
+.shops-hero__content-search {
+  margin-bottom: 16px;
+}
+.shops-hero__content-search__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 365px;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.shops-hero__content-search__label input {
+  width: 100%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 137%;
+  color: var(--black);
+}
+.shops-hero__content-search__label input::-moz-placeholder {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 137%;
+  color: var(--translucent);
+}
+.shops-hero__content-search__label input::placeholder {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 137%;
+  color: var(--translucent);
+}
+.shops-hero__content-bottom {
+  display: grid;
+  grid-template-columns: 375px auto;
+  height: 480px;
+}
+.shops-hero__content-bottom__places {
+  overflow-y: auto;
+  border-radius: 20px 0 0 20px;
+  border: 1px solid var(--line);
+  /* Для Firefox */
+  scrollbar-width: thin; /* Тонкая полоса прокрутки */
+  scrollbar-color: var(--line) var(--substrate); /* Цвет "ползунка" и фон полосы прокрутки */
+  /* Для веб-китов (Chrome, Safari, Edge) */
+}
+.shops-hero__content-bottom__places-list {
+  display: flex;
+  flex-direction: column;
+}
+.shops-hero__content-bottom__places-list__item {
+  padding: 24px;
+  background-color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.shops-hero__content-bottom__places-list__item:not(:last-child) {
+  border-bottom: 1px solid var(--line);
+}
+.shops-hero__content-bottom__places-list__item:hover {
+  background-color: #f9f9f9;
+}
+.shops-hero__content-bottom__places-list__item h3 {
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 112%;
+  color: var(--black);
+}
+.shops-hero__content-bottom__places-list__item p {
+  font-weight: 400;
+  color: var(--gray);
+}
+.shops-hero__content-bottom__places-list__item p.address {
+  margin-bottom: 6px;
+  font-size: 16px;
+  line-height: 112%;
+}
+.shops-hero__content-bottom__places-list__item p.time {
+  font-size: 14px;
+  line-height: 129%;
+}
+.shops-hero__content-bottom__places::-webkit-scrollbar {
+  width: 5px; /* Ширина полосы прокрутки */
+  border-radius: 100px;
+  background-color: var(--substrate); /* Цвет фона полосы прокрутки */
+}
+.shops-hero__content-bottom__places::-webkit-scrollbar-thumb {
+  background-color: var(--line); /* Цвет "ползунка" */
+  border-radius: 100px; /* Закругление углов "ползунка" */
+}
+.shops-hero__content-bottom__map-container {
+  overflow: hidden;
+  border-radius: 0 20px 20px 0;
+}
+.shops-hero__content-bottom__map-container .map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Гарантия и обмен */
+.warranty-header {
+  margin-bottom: 53px;
+}
+
+.warranty-hero {
+  padding-bottom: 72px;
+}
+.warranty-hero__content p {
+  margin-bottom: 32px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 144%;
+  color: var(--black);
+}
+.warranty-hero__content-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.warranty-hero__content-list__item {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  min-height: 420px;
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
+}
+.warranty-hero__content-list__item h3 {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 118%;
+  text-align: center;
+  color: var(--black);
+}
+.warranty-hero__content-list__item-tels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.warranty-hero__content-list__item-tels a {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 127%;
+  color: var(--black);
+  transition: all 0.3s ease-in-out;
+}
+.warranty-hero__content-list__item-tels a:hover {
+  color: var(--yellow);
+}
+.warranty-hero__content-list__item-img {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  background-color: inherit;
+}
+.warranty-hero__content-list__item:hover {
+  transform: scale(105%);
+}
+.warranty-hero__content-list__item:nth-child(1) {
+  background-color: var(--yellow);
+}
+.warranty-hero__content-list__item:nth-child(2) {
+  background-color: var(--substrate);
+}
+.warranty-hero__content-list__item:nth-child(2) h3 {
+  margin-bottom: 24px;
+}
+.warranty-hero__content-list__item:nth-child(3) {
+  background-color: var(--black);
+}
+.warranty-hero__content-list__item:nth-child(3) h3 {
+  margin-bottom: 24px;
+  color: var(--white);
+}
+.warranty-hero__content-list__item:nth-child(3) a {
+  font-size: 16px;
+}
+
+.warranty-questions {
+  padding-bottom: 100px;
+}
+.warranty-questions__content h2 {
+  margin-bottom: 32px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 133%;
+  color: var(--black);
+}
+.warranty-questions__content-faq {
+  margin-bottom: 32px;
+}
+.warranty-questions__content-faq__item {
+  height: 72px;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+.warranty-questions__content-faq__item:not(:last-child) {
+  border-bottom: 1px solid var(--line);
+}
+.warranty-questions__content-faq__item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+}
+.warranty-questions__content-faq__item-header h3 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 133%;
+  color: var(--black);
+  transition: all 0.3s ease-in-out;
+}
+.warranty-questions__content-faq__item-header__arrow svg {
+  stroke: #AFAFAF;
+  transition: all 0.3s ease-in-out;
+}
+.warranty-questions__content-faq__item-answer {
+  padding-right: 30px;
+}
+.warranty-questions__content-faq__item-answer p {
+  padding-bottom: 24px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 162%;
+  color: var(--dark);
+}
+.warranty-questions__content-faq__item-answer__list {
+  list-style: decimal;
+}
+.warranty-questions__content-faq__item-answer__list-item {
+  margin-left: 17px;
+  list-style: decimal;
+}
+.warranty-questions__content-faq__item.active svg {
+  stroke: #353535;
+  transform: rotate(180deg);
+}
+.warranty-questions__content-bottom {
+  display: flex;
+  gap: 24px;
+  padding: 32px 32px;
+  border-radius: 20px;
+  background-color: var(--substrate);
+}
+.warranty-questions__content-bottom__img img {
+  min-width: 78px;
+}
+.warranty-questions__content-bottom__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.warranty-questions__content-bottom__info p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 162%;
+  color: var(--black);
+}
+
+/* Блог */
+.blog-hero {
+  padding-bottom: 114px;
+}
+.blog-hero__content-btns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.blog-hero__content-btns button {
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 157%;
+  color: var(--black);
+  background-color: var(--substrate);
+  transition: all 0.3s ease-in-out;
+}
+.blog-hero__content-btns button.active {
+  background-color: var(--yellow);
+}
+.blog-hero__content-blocks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  row-gap: 54px;
+  -moz-column-gap: 24px;
+       column-gap: 24px;
+  margin-bottom: 52px;
+}
+.blog-hero__content-blocks__block {
+  display: block;
+  border-radius: 20px 20px 8px 8px;
+  transition: all 0.3s ease-in-out;
+}
+.blog-hero__content-blocks__block:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+.blog-hero__content-blocks__block-img {
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.blog-hero__content-blocks__block-img img {
+  pointer-events: none;
+  width: 100%;
+}
+.blog-hero__content-blocks__block-article {
+  padding-top: 16px;
+}
+.blog-hero__content-blocks__block-article__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.blog-hero__content-blocks__block-article__top span {
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+}
+.blog-hero__content-blocks__block-article__top span.new {
+  color: #40bf40;
+  background-color: #e3ffe3;
+}
+.blog-hero__content-blocks__block-article__top span.recommendations {
+  color: #e96c08;
+  background-color: #fcf0e6;
+}
+.blog-hero__content-blocks__block-article__top span.useful {
+  color: var(--black);
+  background-color: #f0f0f0;
+}
+.blog-hero__content-blocks__block-article__top span.best {
+  color: #d9b700;
+  background-color: #fffad1;
+}
+.blog-hero__content-blocks__block-article__top p.time {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 129%;
+  color: #8c8c8c;
+}
+.blog-hero__content-blocks__block-article__top p.views {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+}
+.blog-hero__content-blocks__block-article__top p.views span {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 129%;
+  color: #8c8c8c;
+}
+.blog-hero__content-blocks__block-article h3 {
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 133%;
+  color: var(--black);
+}
+.blog-hero__content-blocks__block-article p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 137%;
+  color: var(--gray);
+}
+.blog-hero__content-blocks__block.hidden {
+  display: none;
+}
+.blog-hero__content-btn {
+  padding: 16px;
+  width: 100%;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 125%;
+  border: none;
+  color: var(--black);
+  background-color: var(--substrate);
+}
+.blog-hero__content-btn:hover {
+  color: var(--black);
+  background-color: var(--yellow);
+}
+
 /* Media */
 @media (max-width: 1440px) {
   /* Карточка товара */
@@ -3502,6 +3903,10 @@ button {
   .deliveryAndPeyment-payment__content-list {
     display: flex;
     flex-direction: column;
+  }
+  /* Блог */
+  .blog-hero__content-blocks {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 @media (max-width: 1111px) {
@@ -3564,6 +3969,14 @@ button {
   }
   .productCard-hero__content-images {
     align-items: center;
+  }
+  /* Гарантия и обмен */
+  .warranty-hero__content-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .blog-hero__content-blocks {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 768px) {
@@ -4132,6 +4545,85 @@ button {
   .deliveryAndPeyment-payment__content-descrs__bottom {
     display: flex;
     flex-direction: column;
+  }
+  /* Магазины и контакты */
+  .shops-header {
+    margin-bottom: 20px;
+  }
+  .shops-hero {
+    padding-bottom: 72px;
+  }
+  .shops-hero__content-search {
+    margin-bottom: 2px;
+  }
+  .shops-hero__content-search__label {
+    width: 100%;
+  }
+  .shops-hero__content-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: auto;
+  }
+  .shops-hero__content-bottom__places {
+    height: 481px;
+    border-radius: 8px;
+  }
+  .shops-hero__content-bottom__map-container {
+    border-radius: 8px;
+    height: 480px;
+  }
+  /* Гарантия и обмен */
+  .warranty-header {
+    margin-bottom: 39px;
+  }
+  .warranty-hero {
+    padding-bottom: 52px;
+  }
+  .warranty-hero__content-list {
+    gap: 16px;
+  }
+  .warranty-hero__content-list__item {
+    padding: 33px 20px;
+    min-height: 380px;
+  }
+  .warranty-hero__content-list__item:nth-child(1) .warranty-hero__content-list__item-img {
+    bottom: -18px;
+  }
+  .warranty-hero__content-list__item:nth-child(2) h3 {
+    margin-bottom: 16px;
+  }
+  .warranty-hero__content-list__item:nth-child(3) .warranty-hero__content-list__item-img {
+    bottom: -41px;
+  }
+  .warranty-hero__content-list__item:hover {
+    transform: none;
+  }
+  .warranty-questions {
+    padding-bottom: 72px;
+  }
+  .warranty-questions__content-faq__item-header {
+    padding: 16px 0;
+  }
+  .warranty-questions__content-bottom {
+    flex-direction: column;
+    padding: 25px 20px;
+  }
+  .blog-hero__content-btns {
+    flex-wrap: wrap;
+  }
+  .blog-hero__content-blocks {
+    grid-template-columns: repeat(1, 1fr);
+    row-gap: 20px;
+  }
+  .blog-hero__content-blocks__block-img {
+    margin-bottom: 0;
+  }
+  .blog-hero__content-blocks__block-article {
+    padding-top: 13px;
+  }
+  .blog-hero__content-blocks__block-article__top {
+    margin-bottom: 24px;
   }
 }
 @media (max-width: 450px) {
