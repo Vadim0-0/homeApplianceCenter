@@ -1542,6 +1542,7 @@ button {
 .index-hero__content-bottom__list {
   display: flex;
   overflow: hidden;
+  transition: all 0.3s ease-in-out;
 }
 .index-hero__content-bottom__list .product-card {
   min-width: 307px;
@@ -1606,6 +1607,7 @@ button {
   display: flex;
   width: 100%;
   overflow: hidden;
+  transition: all 0.3s ease-in-out;
 }
 .index-offers__content-scroll__block {
   position: relative;
@@ -1678,6 +1680,7 @@ button {
   display: flex;
   overflow: hidden;
   margin-bottom: 52px;
+  transition: all 0.3s ease-in-out;
 }
 .index-top__content-top__scroll .product-card {
   min-width: 260px;
@@ -1797,6 +1800,7 @@ button {
 .index-blog__content-bottom__blocks {
   display: flex;
   overflow-x: scroll;
+  transition: all 0.3s ease-in-out;
 }
 .index-blog__content-bottom__blocks-block {
   display: block;
@@ -2929,6 +2933,7 @@ button {
 .productCard-offers__content-scroll {
   display: flex;
   overflow: hidden;
+  transition: all 0.3s ease-in-out;
 }
 .productCard-offers__content-scroll .product-card {
   min-width: 310px;
