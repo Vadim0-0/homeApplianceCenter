@@ -477,15 +477,15 @@
                 font-size: 12px;
                 line-height: 150%;
 
-                &.orange {
+                &.recommendations {
                   color: #e96c08;
                   background-color: #fcf0e6;
                 }
-                &.grey {
+                &.useful {
                   color: var(--black);
                   background-color: #f0f0f0;
                 }
-                &.yellow {
+                &.best {
                   color: #d9b700;
                   background-color: #fffad1;
                 }
@@ -2373,6 +2373,488 @@
   }
 }
 
+/* Магазины и контакты */
+
+.shops-header {
+  margin-bottom: 48px;
+}
+
+.shops-hero {
+  padding-bottom: 102px;
+
+  &__content {
+
+    &-search {
+      margin-bottom: 16px;
+
+      &__label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 365px;
+        padding: 13px 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+
+        & input {
+          width: 100%;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 137%;
+          color: var(--black);
+
+          &::placeholder {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 137%;
+            color: var(--translucent);
+          }
+        }
+      }
+    }
+
+    &-bottom {
+      display: grid;
+      grid-template-columns: 375px auto;
+      height: 480px;
+
+      &__places {
+
+        overflow-y: auto;
+        border-radius: 20px 0 0 20px;
+        border: 1px solid var(--line);
+
+        &-list {
+          display: flex;
+          flex-direction: column;
+
+          &__item {
+            padding: 24px;
+            background-color: var(--white);
+            cursor: pointer;
+            @include transition;
+
+            &:not(:last-child) {
+              border-bottom: 1px solid var(--line);
+            }
+
+            &:hover {
+              background-color: #f9f9f9;
+            }
+
+            & h3 {
+              margin-bottom: 12px;
+              font-weight: 600;
+              font-size: 16px;
+              line-height: 112%;
+              color: var(--black);
+            }
+
+            & p {
+              font-weight: 400;
+              color: var(--gray);
+
+              &.address {
+                margin-bottom: 6px;
+                font-size: 16px;
+                line-height: 112%;
+              }
+
+              &.time {
+                font-size: 14px;
+                line-height: 129%;
+              }
+            }
+          }
+
+        }
+
+        /* Для Firefox */
+        scrollbar-width: thin; /* Тонкая полоса прокрутки */
+        scrollbar-color: var(--line) var(--substrate); /* Цвет "ползунка" и фон полосы прокрутки */
+
+        /* Для веб-китов (Chrome, Safari, Edge) */
+        &::-webkit-scrollbar {
+          width: 5px; /* Ширина полосы прокрутки */
+          border-radius: 100px;
+          background-color: var(--substrate); /* Цвет фона полосы прокрутки */
+
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: var(--line); /* Цвет "ползунка" */
+          border-radius: 100px; /* Закругление углов "ползунка" */
+        }
+      }
+
+      &__map-container {
+        overflow: hidden;
+        border-radius: 0 20px 20px 0;
+
+        & .map {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+    }
+  }
+}
+
+/* Гарантия и обмен */
+
+.warranty-header {
+  margin-bottom: 53px;
+}
+
+.warranty-hero {
+  padding-bottom: 72px;
+
+  &__content {
+
+    & p {
+      margin-bottom: 32px;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 144%;
+      color: var(--black);
+    }
+
+    &-list {
+      @include grid-ColumnsEqually(3, 24px);
+
+      &__item {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+        min-height: 420px;
+        border-radius: 20px;
+        @include transition;
+
+        & h3 {
+          font-weight: 600;
+          font-size: 22px;
+          line-height: 118%;
+          text-align: center;
+          color: var(--black);
+        }
+
+        &-tels {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          & a {
+            font-weight: 700;
+            font-size: 22px;
+            line-height: 127%;
+            color: var(--black);
+            @include transition;
+
+            &:hover {
+              color: var(--yellow);
+            }
+          }
+        }
+
+        &-img {
+          display: flex;
+          position: absolute;
+          bottom: 0;
+          background-color: inherit;
+        }
+
+        &:hover {
+          transform: scale(105%);
+        }
+
+        &:nth-child(1) {
+          background-color: var(--yellow);
+        }
+
+        &:nth-child(2) {
+          background-color: var(--substrate);
+
+          & h3 {
+            margin-bottom: 24px;
+          }
+        }
+
+        &:nth-child(3) {
+          background-color: var(--black);
+
+          & h3 {
+            margin-bottom: 24px;
+            color: var(--white);
+          }
+
+          & a {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.warranty-questions {
+  padding-bottom: 100px;
+
+  &__content {
+
+    & h2 {
+      margin-bottom: 32px;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 133%;
+      color: var(--black);
+    }
+
+    &-faq {
+      margin-bottom: 32px;
+
+      &__item {
+        height: 72px;
+        overflow: hidden;
+        @include transition;
+        cursor: pointer;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid var(--line);
+        }
+
+        &-header {
+          @include flex-betweenCenter;
+          padding: 24px 0;
+
+          & h3 {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 133%;
+            color: var(--black);
+            @include transition;
+          }
+
+          &__arrow svg {
+            stroke: #AFAFAF;
+            @include transition;
+          }
+        }
+
+        &-answer {
+          padding-right: 30px;
+
+          & p {
+            padding-bottom: 24px;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 162%;
+            color: var(--dark);
+          }
+
+          &__list {
+            list-style: decimal;
+
+            &-item {
+              margin-left: 17px;
+              list-style: decimal;
+            }
+          }
+        }
+
+        &.active {
+          & svg {
+          stroke: #353535;
+          transform: rotate(180deg);
+          }
+        }
+
+
+      }
+
+    }
+
+    &-bottom {
+      display: flex;
+      gap: 24px;
+      padding: 32px 32px;
+      border-radius: 20px;
+      background-color: var(--substrate);
+
+      &__img {
+        & img {
+          min-width: 78px;
+        }
+      }
+
+      &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+
+        & p {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 162%;
+          color: var(--black);
+        }
+      }
+    }
+
+  }
+}
+
+/* Блог */
+
+.blog-hero {
+  padding-bottom: 114px;
+
+  &__content {
+
+    &-btns {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+
+      & button {
+        padding: 7px 12px;
+        border-radius: 8px;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 157%;
+        color: var(--black);
+        background-color: var(--substrate);
+        @include transition;
+
+        &.active {
+          background-color: var(--yellow);
+        }
+      }
+    }
+
+    &-blocks {
+      @include grid-ColumnsEqually(4, 24px);
+      row-gap: 54px;
+      column-gap: 24px;
+      margin-bottom: 52px;
+
+      &__block {
+        display: block;
+        border-radius: 20px 20px 8px 8px;
+        @include transition;
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.2);
+        }
+
+        &-img {
+          border-radius: 20px;
+          overflow: hidden;
+          margin-bottom: 8px;
+
+          & img {
+            pointer-events: none;
+            width: 100%;
+          }
+        }
+
+        &-article {
+          padding-top: 16px;
+
+          &__top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+
+            & span {
+              padding: 4px 8px;
+              border-radius: 8px;
+              font-weight: 600;
+              font-size: 12px;
+              line-height: 150%;
+
+              &.new {
+                color: #40bf40;
+                background-color: #e3ffe3;
+              }
+
+              &.recommendations {
+                color: #e96c08;
+                background-color: #fcf0e6;
+              }
+              &.useful {
+                color: var(--black);
+                background-color: #f0f0f0;
+              }
+              &.best {
+                color: #d9b700;
+                background-color: #fffad1;
+              }
+            }
+
+            & p.time {
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 129%;
+              color: #8c8c8c;
+            }
+
+            & p.views {
+              @include flex-center;
+              & span {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 129%;
+                color: #8c8c8c;
+              }
+            }
+          }
+
+          & h3 {
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 133%;
+            color: var(--black);
+          }
+
+          & p {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 137%;
+            color: var(--gray);
+          }
+        }
+
+        &.hidden {
+          display: none;
+        }
+      }
+    }
+
+    &-btn {
+      padding: 16px;
+      width: 100%;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 125%;
+      border: none;
+      color: var(--black);
+      background-color: var(--substrate);
+
+      &:hover {
+        color: var(--black);
+        background-color: var(--yellow);
+      }
+    }
+  }
+}
+
 /* Media */
 
 @media (max-width: 1440px) {
@@ -2476,6 +2958,19 @@
 
         display: flex;
         flex-direction: column;
+      }
+    }
+  }
+
+  /* Блог */
+
+  .blog-hero {
+
+    &__content {
+
+      &-blocks {
+
+        grid-template-columns: repeat(3, 1fr);
       }
     }
   }
@@ -2590,6 +3085,31 @@
       }
     }
   }
+
+  /* Гарантия и обмен */
+
+  .warranty-hero {
+
+    &__content {
+
+      &-list {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  .blog-hero {
+
+    &__content {
+
+      &-blocks {
+
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+
 }
 
 @media (max-width: 768px) {
@@ -3374,6 +3894,146 @@
         &__bottom {
           display: flex;
           flex-direction: column;
+        }
+      }
+    }
+  }
+
+  /* Магазины и контакты */
+
+  .shops-header {
+    margin-bottom: 20px;
+  }
+
+  .shops-hero {
+    padding-bottom: 72px;
+
+    &__content {
+
+      &-search {
+        margin-bottom: 2px;
+
+        &__label {
+          width: 100%;
+        }
+      }
+
+      &-bottom {
+
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        height: auto;
+
+        &__places {
+          height: 481px;
+          border-radius: 8px;
+        }
+
+        &__map-container {
+          border-radius: 8px;
+          height: 480px;
+        }
+      }
+    }
+  }
+
+  /* Гарантия и обмен */
+
+  .warranty-header {
+    margin-bottom: 39px;
+  }
+
+  .warranty-hero {
+    padding-bottom: 52px;
+
+    &__content {
+
+      &-list {
+        gap: 16px;
+
+        &__item {
+          padding: 33px 20px;
+          min-height: 380px;
+
+          &:nth-child(1) {
+
+            & .warranty-hero__content-list__item-img {
+              bottom: -18px;
+            }
+          }
+
+          &:nth-child(2) {
+
+            & h3 {
+              margin-bottom: 16px;
+            }
+          }
+
+          &:nth-child(3) {
+
+            & .warranty-hero__content-list__item-img {
+              bottom: -41px;
+            }
+          }
+
+          &:hover {
+            transform: none;
+          }
+        }
+      }
+    }
+  }
+
+  .warranty-questions {
+    padding-bottom: 72px;
+
+    &__content {
+
+      &-faq {
+
+        &__item {
+
+          &-header {
+            padding: 16px 0;
+          }
+        }
+      }
+
+      &-bottom {
+        flex-direction: column;
+        padding: 25px 20px;
+
+      }
+    }
+  }
+
+  .blog-hero {
+
+    &__content {
+
+      &-btns {
+        flex-wrap: wrap;
+      }
+
+      &-blocks {
+        grid-template-columns: repeat(1, 1fr);
+        row-gap: 20px;
+
+        &__block {
+
+
+          &-img {
+            margin-bottom: 0;
+          }
+
+          &-article {
+            padding-top: 13px;
+
+            &__top {
+              margin-bottom: 24px;
+            }
+          }
         }
       }
     }
