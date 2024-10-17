@@ -104,6 +104,7 @@
       &__list {
         display: flex;
         overflow: hidden;
+        @include transition;
 
         & .product-card {
           min-width: 307px;
@@ -192,6 +193,7 @@
       display: flex;
       width: 100%;
       overflow: hidden;
+      @include transition;
 
       &__block {
         position: relative;
@@ -285,6 +287,7 @@
         display: flex;
         overflow: hidden;
         margin-bottom: 52px;
+        @include transition;
 
         & .product-card {
           min-width: 260px;
@@ -431,6 +434,7 @@
       &__blocks {
         display: flex;
         overflow-x: scroll;
+        @include transition;
 
         &-block {
           display: block;
@@ -1743,6 +1747,7 @@
     &-scroll {
       display: flex;
       overflow: hidden;
+      @include transition;
 
       & .product-card {
         min-width: 310px;
