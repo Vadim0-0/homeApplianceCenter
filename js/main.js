@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+/**/
+
 /* Index-hero - листание блока*/
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -140,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   });
 });
-
 
 /* index-categories */
 
@@ -243,8 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initialize();
   window.addEventListener('resize', resetPosition);
 });
-
-
 
 /* index-recommendations */
 
@@ -922,6 +921,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+/**/
+
 /* Катрочка товара - смена фотографий */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1065,7 +1066,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Пересчет размеров кнопок при изменении размера окна
   window.addEventListener('resize', setButtonStyles);
 });
-
 
 /* Катрочка товара - появвление текста при наведении на на блок "Нашли дешевле" */
 
@@ -1211,7 +1211,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   });
 });
-
 
 /* Катрочка товара - появление блока для отзыва по нажатии на кнопку */
 
@@ -1377,7 +1376,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateProgressBar();
 });
 
-
 /* Катрочка товара - Мобильная версия переключения */
 
 document.addEventListener('click', function (event) {
@@ -1490,12 +1488,201 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+/**/
 
+/* Магазина и контакты - map */
 
+document.addEventListener("DOMContentLoaded", function () {
+  ymaps.ready(init);
 
+  // Инициализация карты
+  let myMap;
 
+  function init() {
+      myMap = new ymaps.Map("map", {
+          center: [48.015884, 37.802850],
+          zoom: 11,
+          controls: ['zoomControl'] // Управление масштабом
+      });
 
+    // Добавление маркеров для мест на карте
+    const places = document.querySelectorAll('#placesList li'); places.forEach(place => {
+      const lat = place.getAttribute('data-lat');
+      const lng = place.getAttribute('data-lng');
+      addPlacemark(lat, lng, place.textContent); // Добавляем маркер на карту
 
+      // Добавление обработчика клика на элемент списка
+      place.addEventListener('click', () => {
+          moveToLocation(lat, lng, place.textContent);
+      });
+    });
 
+    // Обработчик для строки поиска
+    document.getElementById('shops-search').addEventListener('input', filterPlaces);
+  }
 
+ // Функция для добавления маркера на карту
+ function addPlacemark(lat, lng, name) {
+    const placemark = new ymaps.Placemark([lat, lng], {
+        balloonContent: name
+    });
+
+    // Добавление маркера на карту
+    myMap.geoObjects.add(placemark);
+
+    // Добавление обработчика клика на маркер
+    placemark.events.add('click', () => {
+        moveToLocation(lat, lng, name);
+    });
+  }
+
+ // Функция для перемещения карты
+ function moveToLocation(lat, lng, name) {
+    myMap.setCenter([lat, lng], 16); // Увеличение масштаба при перемещении
+    const placemark = new ymaps.Placemark([lat, lng], {
+        balloonContent: name
+    });
+
+    // Удаляем предыдущие маркеры
+    myMap.geoObjects.removeAll();
+    // Добавляем новый маркер
+    myMap.geoObjects.add(placemark);
+    placemark.balloon.open(); // Открытие балуна с информацией
+  }
+
+  // Функция для фильтрации мест
+  function filterPlaces() {
+    const query = this.value.toLowerCase();
+    const places = document.querySelectorAll('#placesList li');
+
+    places.forEach(place => {
+        const placeName = place.textContent.toLowerCase();
+        if (placeName.includes(query)) {
+            place.style.display = ''; // Показываем элемент
+        } else {
+            place.style.display = 'none'; // Скрываем элемент
+        }
+    });
+  }
+});
+
+/* Гарантия - вопросы */
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Получаем все элементы заголовков FAQ
+  const faqHeaders = document.querySelectorAll('.warranty-questions__content-faq__item-header');
+
+  faqHeaders.forEach(header => {
+    // Добавляем обработчик события клика на каждый заголовок
+    header.addEventListener('click', function() {
+      // Получаем родительский элемент FAQ item
+      const faqItem = header.parentElement;
+      // Получаем блок с ответом
+      const answer = faqItem.querySelector('.warranty-questions__content-faq__item-answer');
+
+      // Если блок уже открыт (класс active), то сворачиваем его
+      if (faqItem.classList.contains('active')) {
+        faqItem.style.height = `${header.offsetHeight}px`; // Ставим высоту только заголовка
+        faqItem.classList.remove('active');
+      } else {
+        // Закрываем все остальные блоки, если нужно сделать аккордеон
+        document.querySelectorAll('.warranty-questions__content-faq__item.active').forEach(activeItem => {
+          activeItem.style.height = `${activeItem.querySelector('.warranty-questions__content-faq__item-header').offsetHeight}px`;
+          activeItem.classList.remove('active');
+        });
+
+        // Получаем полную высоту: высота заголовка + высота ответа
+        const fullHeight = header.offsetHeight + answer.scrollHeight;
+        // Задаем новую высоту блоку FAQ item
+        faqItem.style.height = `${fullHeight}px`;
+        // Добавляем класс active
+        faqItem.classList.add('active');
+      }
+    });
+  });
+
+  // Устанавливаем начальную высоту для всех блоков FAQ item
+  document.querySelectorAll('.warranty-questions__content-faq__item').forEach(item => {
+    const header = item.querySelector('.warranty-questions__content-faq__item-header');
+    item.style.height = `${header.offsetHeight}px`;
+  });
+});
+
+/* Блог - переключение блоков */
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Получаем все кнопки фильтрации
+  const buttons = document.querySelectorAll('.blog-hero__content-btns button');
+  // Получаем все блоки
+  const blocks = document.querySelectorAll('.blog-hero__content-blocks__block');
+
+  // Функция для фильтрации блоков
+  function filterBlocks(keyword) {
+      blocks.forEach(block => {
+          const keywords = block.getAttribute('data-keywords').split(' ');
+
+          // Показать блок, если ключевое слово совпадает, или показывать все блоки при выборе "all"
+          if (keyword === 'all' || keywords.includes(keyword)) {
+              block.style.display = 'block';
+          } else {
+              block.style.display = 'none';
+          }
+      });
+  }
+
+  // Функция для активации кнопки
+  function activateButton(button) {
+      // Удаляем класс active у всех кнопок
+      buttons.forEach(btn => btn.classList.remove('active'));
+      // Добавляем класс active к нажатой кнопке
+      button.classList.add('active');
+  }
+
+  // Добавляем обработчик событий на каждую кнопку
+  buttons.forEach(button => {
+      button.addEventListener('click', () => {
+          const filter = button.getAttribute('data-filter');
+          filterBlocks(filter);
+          activateButton(button);
+      });
+  });
+
+  // Проходим по каждому блоку
+  blocks.forEach(block => {
+  // Получаем значение из атрибута 'data-keywords'
+  const keyword = block.getAttribute('data-keywords');
+
+  // Ищем <span> элемент внутри текущего блока
+  const span = block.querySelector('span');
+
+  // Проверяем, что <span> существует
+  if (span) {
+    // Присваиваем значение 'data-keywords' как класс для элемента <span>
+    span.className = keyword;
+
+    // Меняем текст внутри <span> в зависимости от значения 'data-keywords'
+    switch (keyword) {
+      case 'new':
+        span.textContent = 'Новинки';
+        break;
+      case 'recommendations':
+        span.textContent = 'Советы специалистов';
+        break;
+      case 'best':
+        span.textContent = 'Лучшее для вас';
+        break;
+      case 'useful':
+        span.textContent = 'Полезное';
+        break;
+      default:
+        span.textContent = 'Другие'; // Текст по умолчанию, если значение не совпадает
+        break;
+    }
+  }
+});
+  // Показываем все блоки по умолчанию при загрузке страницы
+  filterBlocks('all');
+
+});
 
