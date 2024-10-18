@@ -1383,6 +1383,11 @@ document.addEventListener('click', function (event) {
   const mobileDescr = document.getElementById('productCard-info__content-nav-mobile-descr');
   const navBlock = document.querySelector('.productCard-info__content-nav');
 
+  // Проверяем, существуют ли необходимые элементы на странице
+  if (!mobileButton || !mobileDescr || !navBlock) {
+    return; // Прерываем выполнение, если элементов нет
+  }
+
   // Клик по кнопке мобильного меню
   if (event.target.closest('#productCard-info__content-nav-mobile')) {
     navBlock.classList.toggle('active');
@@ -1403,12 +1408,16 @@ document.addEventListener('click', function (event) {
     return;
   }
 
-  // Клик вне меню и кнопки мобильного меню
-  if (!navBlock.contains(event.target) && !mobileButton.contains(event.target)) {
-    navBlock.classList.remove('active');
-    mobileButton.classList.remove('active');
+  // Проверяем, активен ли блок перед обработкой клика вне его
+  if (navBlock.classList.contains('active') || mobileButton.classList.contains('active')) {
+    // Клик вне меню и кнопки мобильного меню
+    if (!navBlock.contains(event.target) && !mobileButton.contains(event.target)) {
+      navBlock.classList.remove('active');
+      mobileButton.classList.remove('active');
+    }
   }
 });
+
 
 /* Катрочка товара - Форма для отзыва */
 
@@ -1680,9 +1689,253 @@ document.addEventListener('DOMContentLoaded', function() {
         break;
     }
   }
-});
+  });
   // Показываем все блоки по умолчанию при загрузке страницы
   filterBlocks('all');
 
 });
 
+/**/
+
+/* Страница Блога - форма */
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('.blogPage-hero__content-review__form');
+  const nameInput = document.getElementById('blogPage-name');
+  const emailInput = document.getElementById('blogPage-email');
+  const telInput = document.getElementById('blogPage-tel');
+  const textArea = document.getElementById('blogPage-text');
+
+  // Функция для проверки email
+  function validateEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  // Ограничение поля "Имя" только буквами
+  nameInput.addEventListener('input', function () {
+    nameInput.value = nameInput.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s]/g, '');
+  });
+
+  // Маска для поля "Телефон" (только цифры, без пробелов)
+  telInput.addEventListener('input', function () {
+    let value = telInput.value.replace(/\D/g, ''); // Убираем все нецифровые символы
+    if (!value.startsWith('7')) {
+      value = '7' + value; // Добавляем код +7, если его нет
+    }
+    if (value.length > 11) { // Ограничиваем ввод 10 цифрами после +7
+      value = value.substring(0, 11);
+    }
+    telInput.value = '+7' + value.substring(1); // Отображаем номер слитно после +7
+  });
+
+  // Функция для выделения некорректных полей
+  function setError(element, isError) {
+    if (isError) {
+      element.classList.add('error-border');
+    } else {
+      element.classList.remove('error-border');
+    }
+  }
+
+  // Проверка полей при отправке формы
+  form.addEventListener('submit', function (e) {
+    let valid = true;
+
+    // Проверка поля "Имя"
+    if (nameInput.value.trim() === '') {
+      setError(nameInput, true);
+      valid = false;
+    } else {
+      setError(nameInput, false);
+    }
+
+    // Проверка поля "Email"
+    if (!validateEmail(emailInput.value)) {
+      setError(emailInput, true);
+      valid = false;
+    } else {
+      setError(emailInput, false);
+    }
+
+    // Проверка поля "Телефон"
+    if (telInput.value.length !== 12) { // +7XXXXXXXXXX = 12 символов
+      setError(telInput, true);
+      valid = false;
+    } else {
+      setError(telInput, false);
+    }
+
+    // Если форма заполнена неправильно, предотвратить отправку
+    if (!valid) {
+      e.preventDefault();
+    }
+  });
+});
+
+/* Страница Блога - похожие статьи */
+
+document.addEventListener('DOMContentLoaded', () => {
+  const scrollContainer = document.querySelector('.blogPage-articles__content-bottom__blocks');
+  const cards = document.querySelectorAll('.blogPage-articles__content-bottom__blocks-block');
+  const progressIndicator = document.querySelector('.blogPage-articles__content-bottom__indicator-progress');
+
+  let cardWidth = cards[0].offsetWidth;  // Ширина одного блока
+  let cardMarginRight = parseFloat(getComputedStyle(cards[0]).marginRight);  // Правый отступ
+  let scrollAmount = cardWidth + cardMarginRight;  // Общая длина прокрутки одного блока
+  let totalScrollWidth = scrollContainer.scrollWidth - scrollContainer.offsetWidth;  // Максимальная прокрутка
+
+  // Функция для обновления ширины индикатора прогресса
+  function updateProgress() {
+    let scrollLeft = scrollContainer.scrollLeft;
+    let scrollPercentage = (scrollLeft / totalScrollWidth) * 100;
+    progressIndicator.style.width = `${scrollPercentage}%`;
+  }
+
+  // Обновление индикатора при скролле
+  scrollContainer.addEventListener('scroll', updateProgress);
+
+  // Поддержка свайпа
+  let startX;
+  let scrollStart;
+
+  scrollContainer.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+    scrollStart = scrollContainer.scrollLeft;
+  });
+
+  scrollContainer.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    const moveX = touch.pageX - startX;
+    scrollContainer.scrollLeft = scrollStart - moveX;
+  });
+
+  // Обновление размеров при изменении окна
+  window.addEventListener('resize', () => {
+    cardWidth = cards[0].offsetWidth;
+    cardMarginRight = parseFloat(getComputedStyle(cards[0]).marginRight);
+    scrollAmount = cardWidth + cardMarginRight;
+    totalScrollWidth = scrollContainer.scrollWidth - scrollContainer.offsetWidth;
+    updateProgress();  // Обновляем прогресс после изменения размеров
+  });
+});
+
+/**/
+
+/* Корзина - изменение значения в поле */
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Функция для изменения значения
+  function updateValue(element, delta) {
+    // Найти <p> с числовым значением
+    const valueElement = element.querySelector('.basket-hero__content-products__list-item__article-volume__value');
+    let currentValue = parseInt(valueElement.textContent);
+
+    // Обновить значение (минимум 0)
+    currentValue = Math.max(0, currentValue + delta);
+
+    // Установить обновленное значение
+    valueElement.textContent = currentValue;
+  }
+
+  // Добавить обработчики событий для всех элементов
+  document.querySelectorAll('.basket-hero__content-products__list-item__article-volume').forEach(function(item) {
+    // Кнопка уменьшения
+    item.querySelector('.decrease').addEventListener('click', function() {
+      updateValue(item, -1);
+    });
+
+    // Кнопка увеличения
+    item.querySelector('.increase').addEventListener('click', function() {
+      updateValue(item, +1);
+    });
+  });
+});
+
+/**/
+
+/* Оплата и доставка - форма */
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('.payment-hero__content-peyment__form');
+  const inputs = form.querySelectorAll('input[required]');
+  const telInput = document.getElementById('payment-tel');
+  const emailInput = document.getElementById('payment-email');
+  const nameInput = document.getElementById('payment-firstName');
+  const secondNameInput = document.getElementById('payment-secondName');
+
+  // Ограничение на ввод только букв в поле "Имя"
+  nameInput.addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^а-яА-ЯёЁa-zA-Z]/g, '');
+  });
+
+  // Ограничение на ввод только букв в поле "Фамилия"
+  secondNameInput.addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^а-яА-ЯёЁa-zA-Z]/g, '');
+  });
+
+  // Маска для телефона без пробелов
+  telInput.addEventListener('input', function (e) {
+    let val = this.value.replace(/\D/g, ''); // Удаление всех нечисловых символов
+    if (val.length > 1) {
+      this.value = '+7' + val.substring(1, 11); // Форматируем номер без пробелов
+    } else {
+      this.value = '+7'; // Когда поле очищено, оставляем только +7
+    }
+  });
+
+  // Ограничение на ввод только цифр в поле "Телефон"
+  telInput.addEventListener('keydown', function (e) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (!/\d/.test(e.key) && !allowedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  // Функция для проверки правильности формата телефона
+  function validatePhone(phone) {
+    const phoneRegex = /^\+7\d{10}$/; // Регулярное выражение для проверки номера без пробелов
+    return phoneRegex.test(phone);
+  }
+
+  // Функция для проверки правильности формата email
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // Проверка формы при отправке
+  form.addEventListener('submit', function (e) {
+    let isValid = true;
+
+    // Проверка всех обязательных полей
+    inputs.forEach(input => {
+      if (!input.value.trim()) {
+        input.style.borderColor = 'red'; // Окрашиваем бордер в красный, если поле пустое
+        isValid = false;
+      } else {
+        input.style.borderColor = ''; // Возвращаем стандартный бордер
+      }
+    });
+
+    // Проверка телефона
+    if (!validatePhone(telInput.value)) {
+      telInput.style.borderColor = 'red';
+      isValid = false;
+    } else {
+      telInput.style.borderColor = '';
+    }
+
+    // Проверка email
+    if (!validateEmail(emailInput.value)) {
+      emailInput.style.borderColor = 'red';
+      isValid = false;
+    } else {
+      emailInput.style.borderColor = '';
+    }
+
+    if (!isValid) {
+      e.preventDefault(); // Предотвращаем отправку формы, если есть ошибки
+    }
+  });
+});
