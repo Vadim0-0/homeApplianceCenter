@@ -20,45 +20,34 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-/* Header - menu-mobile - открытие карточек  */
+/* Header - открытие блока сравнение  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Получаем все элементы меню
-  const menuItems = document.querySelectorAll('.header-menu-mobile__content-menu__list-item');
+document.addEventListener('DOMContentLoaded', function() {
+  const comparisonBlock = document.querySelector('.header-comparison');
+  const comparisonBtn = document.getElementById('header-comparison-btn');
+  const comparisonBlockContent = document.querySelector('.header-comparison__content');
+  let isActive = false; // Флаг для отслеживания активного состояния блока
 
-  // Функция для установки начальной высоты элементов (высота кнопки)
-  menuItems.forEach(item => {
-    const button = item.querySelector('button');
-    item.style.height = `${button.offsetHeight}px`;
+  // Добавляем класс active при клике на кнопку
+  comparisonBtn.addEventListener('click', function() {
+    comparisonBlock.classList.add('active');
+    isActive = true;
   });
 
-  // Функция для обработки кликов на кнопки
-  menuItems.forEach(item => {
-    const button = item.querySelector('button');
+  // Убираем класс active при уходе мыши из блока comparisonBlockContent
+  comparisonBlockContent.addEventListener('mouseleave', function() {
+    if (isActive) {
+      comparisonBlock.classList.remove('active');
+      isActive = false;
+    }
+  });
 
-    button.addEventListener('click', () => {
-      // Проверяем, активен ли элемент уже
-      const isActive = item.classList.contains('active');
-
-      // Убираем активный класс у всех элементов и сбрасываем их высоту
-      menuItems.forEach(i => {
-        i.classList.remove('active');
-        const btn = i.querySelector('button');
-        i.style.height = `${btn.offsetHeight}px`;
-      });
-
-      // Если текущий элемент не был активен, активируем его
-      if (!isActive) {
-        item.classList.add('active');
-
-        // Получаем высоту кнопки и вложенного списка
-        const itemList = item.querySelector('.header-menu-mobile__content-menu__list-item__list');
-        const totalHeight = button.offsetHeight + (itemList ? itemList.offsetHeight : 0);
-
-        // Устанавливаем новую высоту для активного элемента
-        item.style.height = `${totalHeight}px`;
-      }
-    });
+  // Убираем класс active при клике вне блока comparisonBlockContent
+  document.addEventListener('mousedown', function(event) {
+    if (isActive && !comparisonBlockContent.contains(event.target)) {
+      comparisonBlock.classList.remove('active');
+      isActive = false;
+    }
   });
 });
 
@@ -1429,7 +1418,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (nameInput && emailInput && telInput && form) {
 
-    // Маска для телефона
+    // Маска для телефона: +7 и слитные цифры
     telInput.addEventListener("input", function (e) {
       let value = telInput.value.replace(/\D/g, ""); // Удаляем все нецифровые символы
 
@@ -1437,10 +1426,8 @@ document.addEventListener("DOMContentLoaded", function () {
         value = value.slice(1); // Убираем первый символ, если это 7
       }
 
-      // Формируем маску +7 XXX XXX XX XX
-      telInput.value = "+7 " + value.slice(0, 3) + (value.length > 3 ? " " + value.slice(3, 6) : "") +
-                      (value.length > 6 ? " " + value.slice(6, 8) : "") +
-                      (value.length > 8 ? " " + value.slice(8, 10) : "");
+      // Формируем маску +7XXXXXXXXXX
+      telInput.value = "+7" + value.slice(0, 10);
     });
 
     // Ограничение ввода только букв для имени
@@ -1450,7 +1437,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Функция для окрашивания бордера в красный при ошибке
     function setError(input) {
-      input.style.border = "1px solid red";
+      input.style.border = "2px solid red";
     }
 
     // Функция для сброса стиля бордера
@@ -1496,6 +1483,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error("Не удалось найти необходимые элементы на странице");
   }
 });
+
 
 /**/
 
@@ -1939,3 +1927,190 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+
+/* Сравнение товаров - управление скролллом */
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Получаем элемент с классом productComparison-hero__content-cards
+  const scrollContainerCards = document.querySelector('.productComparison-hero__content-cards');
+  const scrollContainerList = document.querySelector('.productComparison-hero__content-info__item-bottom');
+
+  // Функция для горизонтальной прокрутки
+  function addHorizontalScroll(scrollContainer) {
+    if (scrollContainer) {
+      scrollContainer.addEventListener('wheel', function(event) {
+        // Предотвращаем стандартное поведение прокрутки по вертикали
+        event.preventDefault();
+
+        // Скролим по горизонтали
+        scrollContainer.scrollLeft += event.deltaY;
+      });
+    }
+  }
+
+  // Добавляем прокрутку для обоих элементов
+  addHorizontalScroll(scrollContainerCards);
+  addHorizontalScroll(scrollContainerList);
+});
+
+/* Сравнение товаров - открытие блоков */
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Получаем все элементы заголовков FAQ
+  const faqHeaders = document.querySelectorAll('.productComparison-hero__content-info__item-header');
+
+  faqHeaders.forEach(header => {
+    // Добавляем обработчик события клика на каждый заголовок
+    header.addEventListener('click', function() {
+      // Получаем родительский элемент FAQ item
+      const faqItem = header.parentElement;
+      // Получаем блок с ответом
+      const answer = faqItem.querySelector('.productComparison-hero__content-info__item-bottom');
+
+      // Если блок уже открыт (класс active), то сворачиваем его
+      if (faqItem.classList.contains('active')) {
+        faqItem.style.height = `${header.offsetHeight}px`; // Ставим высоту только заголовка
+        faqItem.classList.remove('active');
+      } else {
+        // Получаем полную высоту: высота заголовка + высота ответа
+        const fullHeight = header.offsetHeight + answer.scrollHeight;
+        // Задаем новую высоту блоку FAQ item
+        faqItem.style.height = `${fullHeight}px`;
+        // Добавляем класс active
+        faqItem.classList.add('active');
+      }
+    });
+  });
+
+  // Устанавливаем начальную высоту для всех блоков FAQ item
+  document.querySelectorAll('.productComparison-hero__content-info__item').forEach(item => {
+    const header = item.querySelector('.productComparison-hero__content-info__item-header');
+    item.style.height = `${header.offsetHeight}px`;
+  });
+});
+
+/* Личный кабинет - открытие меню в мобильной версии */
+
+document.addEventListener('DOMContentLoaded', function() {
+  const personalAccountBlock = document.querySelector('.personalAccount-hero__content-btns');
+  const personalAccountBtn = document.getElementById('personalAccount-btns-mobile');
+  let isActive = false; // Флаг для отслеживания активного состояния
+
+  // Функция для переключения классов active
+  function toggleActive() {
+    personalAccountBlock.classList.toggle('active');
+    personalAccountBtn.classList.toggle('active');
+    isActive = !isActive;
+  }
+
+  // Добавляем/убираем класс active при клике на кнопку
+  personalAccountBtn.addEventListener('click', toggleActive);
+
+  // Убираем класс active при уходе мыши из блока
+  personalAccountBlock.addEventListener('mouseleave', function() {
+    if (isActive) {
+      personalAccountBlock.classList.remove('active');
+      personalAccountBtn.classList.remove('active');
+      isActive = false;
+    }
+  });
+
+  // Убираем класс active при клике вне блока, если он активен
+  document.addEventListener('mousedown', function(event) {
+    if (isActive && !personalAccountBlock.contains(event.target) && !personalAccountBtn.contains(event.target)) {
+      personalAccountBlock.classList.remove('active');
+      personalAccountBtn.classList.remove('active');
+      isActive = false;
+    }
+  });
+});
+
+
+/* Личный кабинет - мои заказы */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Функция для инициализации обработки всех элементов
+  function setupItems() {
+    // Находим все элементы с классом personalAccount-hero__content-bloks__orders-list__item
+    const items = document.querySelectorAll('.personalAccount-hero__content-bloks__orders-list__item');
+
+    // Проходим по каждому элементу и устанавливаем обработчики
+    items.forEach(item => {
+      // Проверяем, был ли уже обработан этот элемент, чтобы избежать дублирования событий
+      if (!item.dataset.initialized) {
+        // Отмечаем элемент как инициализированный
+        item.dataset.initialized = 'true';
+
+        // Находим свернутую и развернутую части блока
+        const collapsedBlock = item.querySelector('.personalAccount-hero__content-bloks__orders-list__item-collapsed');
+        const expandedBlock = item.querySelector('.personalAccount-hero__content-bloks__orders-list__item-expanded');
+        const rollButton = item.querySelector('.personalAccount__orders-block-roll');
+
+        // Установка высоты при загрузке страницы для активного элемента
+        if (expandedBlock.classList.contains('active')) {
+          item.style.height = expandedBlock.scrollHeight + 'px';
+        } else {
+          item.style.height = collapsedBlock.scrollHeight + 'px';
+        }
+
+        // Обработка клика на свернутый блок для его открытия
+        collapsedBlock.addEventListener('click', () => {
+          if (!expandedBlock.classList.contains('active')) {
+            // Удаляем активные классы у всех элементов, чтобы только один блок был развернут
+            items.forEach(otherItem => {
+              const otherCollapsedBlock = otherItem.querySelector('.personalAccount-hero__content-bloks__orders-list__item-collapsed');
+              const otherExpandedBlock = otherItem.querySelector('.personalAccount-hero__content-bloks__orders-list__item-expanded');
+
+              otherCollapsedBlock.classList.add('active');
+              otherExpandedBlock.classList.remove('active');
+              otherItem.classList.remove('change');
+
+              // Возвращаем высоту свернутого блока для всех остальных
+              otherItem.style.height = otherCollapsedBlock.scrollHeight + 'px';
+            });
+
+            // Активируем текущий блок: убираем класс active у свернутого и добавляем к развернутому
+            collapsedBlock.classList.remove('active');
+            expandedBlock.classList.add('active');
+            item.classList.add('change');
+
+            // Устанавливаем высоту для развернутого блока
+            item.style.height = expandedBlock.scrollHeight + 'px';
+          }
+        });
+
+        // Обработка клика на кнопку "свернуть" внутри развернутого блока
+        rollButton.addEventListener('click', (event) => {
+          event.stopPropagation();
+
+          // Возвращаем активный класс к свернутому блоку и убираем с развернутого
+          collapsedBlock.classList.add('active');
+          expandedBlock.classList.remove('active');
+          item.classList.remove('change');
+
+          // Устанавливаем высоту свернутого блока
+          item.style.height = collapsedBlock.scrollHeight + 'px';
+        });
+      }
+    });
+  }
+
+  // Инициализация всех элементов при загрузке страницы
+  setupItems();
+
+  // Пример динамического добавления элементов, чтобы они тоже работали
+  // Эту функцию можно вызывать каждый раз, когда добавляются новые элементы
+  function addNewItem(newItemHtml) {
+    // Добавляем новый элемент в список заказов (например, в конец списка)
+    const ordersList = document.querySelector('.personalAccount-hero__content-bloks__orders-list');
+    ordersList.insertAdjacentHTML('beforeend', newItemHtml);
+
+    // Переинициализируем все элементы, включая новые
+    setupItems();
+  }
+
+  // Пример вызова функции для добавления нового элемента:
+  // addNewItem('<li class="personalAccount-hero__content-bloks__orders-list__item">...</li>');
+});
+
