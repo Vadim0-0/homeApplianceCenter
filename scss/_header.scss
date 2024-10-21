@@ -1,4 +1,5 @@
 .header {
+  position: relative;
 
   &-top {
     padding: 10px 0;
@@ -61,6 +62,7 @@
     padding: 17px 0;
     box-shadow: 0 0 1px 0 #616161;
     background: var(--white);
+    position: relative;
 
     &__content {
       @include flex-betweenCenter;
@@ -135,6 +137,7 @@
         @include flex-center(20px);
 
         &__item {
+          position: relative;
 
           & a {
             @include flex-center(8px);
@@ -158,9 +161,31 @@
               }
             }
           }
+
+          &-span {
+            @include flex-center;
+            position: absolute;
+            top: -6px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 100px;
+            border: 2px solid var(--white);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
+            background-color: var(--yellow);
+
+            & p {
+              font-weight: 700;
+              font-size: 12px;
+              line-height: 100%;
+              color: #000;
+            }
+          }
         }
       }
     }
+
+
   }
 
   &-mobile {
@@ -173,6 +198,61 @@
 
   &-menu-mobile {
     display: none;
+  }
+
+  &-comparison {
+    position: absolute;
+    right: 0;
+    top: 110px;
+    width: 100%;
+
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    @include transition;
+
+    &.active {
+      opacity: 1;
+      pointer-events: all;
+      visibility: visible;
+      z-index: 5;
+    }
+
+    &__content {
+      margin-left: auto;
+      max-width: 330px;
+      padding: 24px 32px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.12);
+      background-color: var(--white);
+
+      &-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-bottom: 16px;
+
+        &__item {
+          @include flex-center(16px);
+
+          &-img {
+            max-width: 70px;
+          }
+
+          & h3 {
+            max-width: 180px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 143%;
+            color: var(--gray);
+          }
+        }
+      }
+
+      &-btn {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -291,17 +371,7 @@
               overflow: hidden;
               transition: all 0.5s ease;
 
-              &.active {
-
-                & button {
-
-                  & p {
-                    color: var(--green);
-                  }
-                }
-              }
-
-              & button {
+              & a{
                 position: relative;
                 display: flex;
                 align-items: center;
@@ -312,6 +382,7 @@
 
                 & svg:nth-child(1) {
                   min-width: 24px;
+                  stroke: var(--black);
                 }
 
                 & p {
@@ -329,14 +400,6 @@
                   top: 50%;
                   right: 10px;
                   @include transform-center(0, -50%);
-                }
-
-                &:hover {
-                  background-color: var(--white);
-
-                  & p{
-                    color: var(--green);
-                  }
                 }
               }
 
