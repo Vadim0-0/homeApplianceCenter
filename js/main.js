@@ -1932,27 +1932,70 @@ document.addEventListener('DOMContentLoaded', function () {
 /* Сравнение товаров - управление скролллом */
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Получаем элемент с классом productComparison-hero__content-cards
+  // Получаем элементы
   const scrollContainerCards = document.querySelector('.productComparison-hero__content-cards');
   const scrollContainerList = document.querySelector('.productComparison-hero__content-info__item-bottom');
 
-  // Функция для горизонтальной прокрутки
-  function addHorizontalScroll(scrollContainer) {
-    if (scrollContainer) {
-      scrollContainer.addEventListener('wheel', function(event) {
-        // Предотвращаем стандартное поведение прокрутки по вертикали
-        event.preventDefault();
+  // Функция для плавной горизонтальной прокрутки
+  function smoothScroll(scrollContainer, delta) {
+    let start = scrollContainer.scrollLeft;
+    let end = start + delta;
+    let startTime = null;
 
-        // Скролим по горизонтали
-        scrollContainer.scrollLeft += event.deltaY;
-      });
+    // Продолжительность анимации (в миллисекундах)
+    const duration = 300;
+
+    // Функция анимации
+    function animateScroll(time) {
+      if (startTime === null) {
+        startTime = time;
+      }
+      const timeElapsed = time - startTime;
+      const progress = Math.min(timeElapsed / duration, 1); // Ограничиваем прогресс от 0 до 1
+      const ease = progress * (2 - progress); // Функция плавного ускорения/замедления (easing)
+
+      // Вычисляем текущее положение прокрутки
+      scrollContainer.scrollLeft = start + (end - start) * ease;
+
+      // Если анимация не завершена, продолжаем её
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    }
+
+    requestAnimationFrame(animateScroll);
+  }
+
+  // Функция для активации горизонтальной прокрутки, если содержимое переполняет контейнер
+  function addHorizontalScrollIfOverflow(scrollContainer) {
+    if (scrollContainer) {
+      if (scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+        scrollContainer.addEventListener('wheel', function(event) {
+          event.preventDefault();
+          smoothScroll(scrollContainer, event.deltaY);
+        });
+      } else {
+        // Удаляем обработчик, если контент не переполняет контейнер
+        scrollContainer.removeEventListener('wheel', function(event) {
+          event.preventDefault();
+          smoothScroll(scrollContainer, event.deltaY);
+        });
+      }
     }
   }
 
-  // Добавляем прокрутку для обоих элементов
-  addHorizontalScroll(scrollContainerCards);
-  addHorizontalScroll(scrollContainerList);
+  // Проверяем и добавляем горизонтальную прокрутку для обоих элементов
+  addHorizontalScrollIfOverflow(scrollContainerCards);
+  addHorizontalScrollIfOverflow(scrollContainerList);
+
+  // Следим за изменением размера окна и пересчитываем
+  window.addEventListener('resize', function() {
+    addHorizontalScrollIfOverflow(scrollContainerCards);
+    addHorizontalScrollIfOverflow(scrollContainerList);
+  });
 });
+
+
 
 /* Сравнение товаров - открытие блоков */
 
