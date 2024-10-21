@@ -2090,12 +2090,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const expandedBlock = item.querySelector('.personalAccount-hero__content-bloks__orders-list__item-expanded');
         const rollButton = item.querySelector('.personalAccount__orders-block-roll');
 
-        // Установка высоты при загрузке страницы для активного элемента
-        if (expandedBlock.classList.contains('active')) {
-          item.style.height = expandedBlock.scrollHeight + 'px';
-        } else {
-          item.style.height = collapsedBlock.scrollHeight + 'px';
-        }
+        // Установка высоты при загрузке страницы
+        const calculateHeight = () => {
+          if (expandedBlock.classList.contains('active')) {
+            item.style.height = expandedBlock.scrollHeight + 'px';
+          } else {
+            item.style.height = collapsedBlock.scrollHeight + 'px';
+          }
+        };
+
+        // Вызываем функцию для расчета высоты при загрузке
+        calculateHeight();
 
         // Обработка клика на свернутый блок для его открытия
         collapsedBlock.addEventListener('click', () => {
@@ -2135,6 +2140,9 @@ document.addEventListener('DOMContentLoaded', () => {
           // Устанавливаем высоту свернутого блока
           item.style.height = collapsedBlock.scrollHeight + 'px';
         });
+
+        // Перерасчет высоты блока при изменении содержимого или динамическом добавлении
+        window.addEventListener('resize', calculateHeight);
       }
     });
   }
@@ -2152,8 +2160,131 @@ document.addEventListener('DOMContentLoaded', () => {
     // Переинициализируем все элементы, включая новые
     setupItems();
   }
+});
 
-  // Пример вызова функции для добавления нового элемента:
-  // addNewItem('<li class="personalAccount-hero__content-bloks__orders-list__item">...</li>');
+
+/* Личный кабинет - валидации формы Date */
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('.personalAccount-hero__content-bloks__data-form');
+  const inputs = form.querySelectorAll('input[required]');
+
+  // Ограничение для ввода только букв в поле "Имя"
+  const firstNameInput = document.getElementById('personalAccount-firstName');
+  firstNameInput.addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+    validateField(firstNameInput); // Проверяем поле при вводе
+  });
+
+  // Ограничение для ввода только букв в поле "Фамилия"
+  const secondNameInput = document.getElementById('personalAccount-secondName');
+  secondNameInput.addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+    validateField(secondNameInput); // Проверяем поле при вводе
+  });
+
+  // Функция для проверки полей и окрашивания бордера
+  function validateField(input) {
+    if (!input.validity.valid || input.value.trim() === '') {
+      input.style.borderColor = 'red';
+    } else {
+      input.style.borderColor = '';
+    }
+  }
+
+  // Проверка всех полей при отправке формы
+  form.addEventListener('submit', function (e) {
+    let isValid = true;
+    inputs.forEach(function (input) {
+      validateField(input);
+      if (!input.validity.valid || input.value.trim() === '') {
+        isValid = false;
+      }
+    });
+
+    // Останавливаем отправку формы, если есть ошибки
+    if (!isValid) {
+      e.preventDefault();
+    }
+  });
+
+  // Проверка поля при вводе данных
+  inputs.forEach(function (input) {
+    input.addEventListener('input', function () {
+      validateField(input); // Проверка поля при каждом изменении
+    });
+  });
+});
+
+/* Личный кабинет - валидации формы adress */
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('.personalAccount-hero__content-bloks__adress-form');
+  const inputs = form.querySelectorAll('input[required]');
+
+  // Ограничение для ввода только букв в поле "Имя"
+  const firstNameInput = document.getElementById('personalAccount-adress-firstName');
+  firstNameInput.addEventListener('input', function () {
+    this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+    validateField(firstNameInput);
+  });
+
+  // Ограничение для ввода только букв в поле "Фамилия"
+  const secondNameInput = document.getElementById('personalAccount-adress-secondName');
+  secondNameInput.addEventListener('input', function () {
+    this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+    validateField(secondNameInput);
+  });
+
+  // Маска для телефона
+  const phoneInput = document.getElementById('personalAccount-adress-tel');
+  phoneInput.addEventListener('input', function () {
+    let value = phoneInput.value.replace(/\D/g, ''); // Удаляем все символы, кроме цифр
+    if (value.startsWith('7')) {
+      value = value.substring(1); // Убираем лишнюю семёрку, если пользователь ввел вручную
+    }
+    phoneInput.value = '+7 ' + value.substring(0, 10); // Ограничиваем длину ввода
+    validateField(phoneInput);
+  });
+
+  // Функция для валидации полей
+  function validateField(input) {
+    if (input === phoneInput) {
+      // Валидация телефона: проверяем, что в номере ровно 10 цифр после +7
+      const digits = input.value.replace(/\D/g, '');
+      if (digits.length !== 11 || !digits.startsWith('7')) {
+        input.style.borderColor = 'red';
+      } else {
+        input.style.borderColor = '';
+      }
+    } else if (!input.validity.valid || input.value.trim() === '') {
+      input.style.borderColor = 'red';
+    } else {
+      input.style.borderColor = '';
+    }
+  }
+
+  // Проверка всех полей при отправке формы
+  form.addEventListener('submit', function (e) {
+    let isValid = true;
+    inputs.forEach(function (input) {
+      validateField(input);
+      if (!input.validity.valid || input.value.trim() === '' || (input === phoneInput && input.value.replace(/\D/g, '').length !== 11)) {
+        isValid = false;
+      }
+    });
+
+    // Останавливаем отправку формы, если есть ошибки
+    if (!isValid) {
+      e.preventDefault();
+    }
+  });
+
+  // Проверка поля при вводе данных
+  inputs.forEach(function (input) {
+    input.addEventListener('input', function () {
+      validateField(input);
+    });
+  });
 });
 
