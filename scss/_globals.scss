@@ -130,9 +130,6 @@ button {
     height: 100%;
     z-index: 1;
 
-    &:hover {
-      background: rgba(0, 0, 0, 0.3);
-    }
   }
 
   &__discount {
@@ -168,6 +165,7 @@ button {
     gap: 8px;
     top: 12px;
     right: 12px;
+    z-index: 1;
 
     & button {
       & svg {
