@@ -1,3 +1,115 @@
+/* Header - menu */
+document.addEventListener("DOMContentLoaded", () => {
+  const headerMenu = document.querySelector(".header-menu");
+  const headerBottom = document.querySelector(".header-bottom");
+  const headerBottomBtn = document.querySelector(".header-bottom__content-nav__btn");
+  const headerMenuContent = document.querySelector(".header-menu__content");
+
+  if (!headerMenu || !headerBottom || !headerBottomBtn || !headerMenuContent) {
+    return;
+  }
+
+  headerBottomBtn.addEventListener("click", (event) => {
+    event.stopPropagation(); // Останавливаем всплытие события
+    headerMenu.classList.toggle("active");
+    headerBottomBtn.classList.toggle("active");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!headerMenuContent.contains(event.target) && !headerBottomBtn.contains(event.target)) {
+      headerMenu.classList.remove("active");
+      headerBottomBtn.classList.remove("active");
+    }
+  });
+});
+
+/* Header - переключение блоков */
+document.addEventListener("DOMContentLoaded", () => {
+  // Получаем все кнопки в меню
+  const menuItems = document.querySelectorAll('.header-menu__content-menu__list-item button');
+  // Получаем все списки с продуктами
+  const productLists = document.querySelectorAll('.header-menu__content-products__card-list');
+
+  if (!productLists || !menuItems) {
+    return;
+  }
+
+  // Функция для обработки наведения на кнопку
+  function handleMenuHover(event) {
+    const targetId = event.currentTarget.id;
+
+    // Удаляем класс active у всех элементов меню
+    menuItems.forEach(item => {
+      item.parentElement.classList.remove('active');
+    });
+
+    // Добавляем класс active к элементу меню, на который навели курсор
+    event.currentTarget.parentElement.classList.add('active');
+
+    // Удаляем класс active у всех списков продуктов
+    productLists.forEach(list => {
+      list.classList.remove('active');
+    });
+
+    // Находим список продуктов, который соответствует выбранному меню
+    const targetList = document.querySelector(`.header-menu__content-products__card-list[data-target="${targetId}"]`);
+
+    // Добавляем класс active к соответствующему списку продуктов
+    if (targetList) {
+      targetList.classList.add('active');
+    }
+  }
+
+  // Функция для обработки кликов на мобильных устройствах
+  function handleMobileClick(event) {
+    const targetId = event.currentTarget.id;
+
+    // Проверяем, активна ли уже эта кнопка
+    if (!event.currentTarget.dataset.clicked) {
+      // Если кнопка не была активирована, предотвращаем переход по ссылке
+      event.preventDefault();
+
+      // Удаляем класс active у всех элементов меню
+      menuItems.forEach(item => {
+        item.parentElement.classList.remove('active');
+        delete item.dataset.clicked; // Сбрасываем предыдущие клики
+      });
+
+      // Добавляем класс active к текущей кнопке
+      event.currentTarget.parentElement.classList.add('active');
+
+      // Устанавливаем флаг клика на текущей кнопке
+      event.currentTarget.dataset.clicked = "true";
+
+      // Удаляем класс active у всех списков продуктов
+      productLists.forEach(list => {
+        list.classList.remove('active');
+      });
+
+      // Находим и активируем соответствующий список продуктов
+      const targetList = document.querySelector(`.header-menu__content-products__card-list[data-target="${targetId}"]`);
+      if (targetList) {
+        targetList.classList.add('active');
+      }
+    } else {
+      // Если кнопка уже активна, даем возможность перейти по ссылке
+      delete event.currentTarget.dataset.clicked; // Сбрасываем флаг клика
+    }
+  }
+
+  // Определяем, используется ли мобильное устройство
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  // Назначаем обработчики событий
+  menuItems.forEach(button => {
+    if (isMobile) {
+      button.addEventListener('click', handleMobileClick);
+    } else {
+      button.addEventListener('mouseenter', handleMenuHover);
+    }
+  });
+});
+
 /* Header - menu-mobile - открытие закрытие  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -60,6 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const productCards = document.querySelectorAll('.index-hero__content-bottom__list .product-card');
   const prevButton = document.getElementById('index-hero__btn-prev');
   const nextButton = document.getElementById('index-hero__btn-next');
+
+  if (!productList || !productCards || !prevButton || !nextButton) {
+    return;
+  }
 
   // Функция для получения ширины блока
   function getCardWidth() {
@@ -138,6 +254,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const cardsContainer = document.querySelector('.index-categories__content-scroll__cards');
   const cards = document.querySelectorAll('.index-categories__content-scroll__cards-card');
   const indicators = document.querySelectorAll('.index-categories__content-position span');
+
+  if (!cardsContainer || !cards || !indicators) {
+    return;
+  }
 
   let currentIndex = 0;
   let startX = 0;
@@ -240,6 +360,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const cardsContainer = document.querySelector('.index-recommendations__content-scroll__cards');
   const cards = document.querySelectorAll('.index-recommendations__content-scroll__cards .product-card');
   const indicators = document.querySelectorAll('.index-recommendations__content-position span');
+
+  if (!cardsContainer || !cards || !indicators) {
+    return;
+  }
 
   let currentIndex = 0;
 
@@ -357,6 +481,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('index-offers-btn-prev');
   const nextBtn = document.getElementById('index-offers-btn-next');
 
+  if (!scrollContainer || !blocks || !prevBtn || !nextBtn) {
+    return;
+  }
+
   let blockWidth = blocks[0].offsetWidth + parseFloat(getComputedStyle(blocks[0]).marginRight);
   let currentIndex = 0;
 
@@ -461,6 +589,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('index-top-btn-prev');
   const progressIndicator = document.querySelector('.index-top__content-top__indicator-progress');
 
+  if (!scrollContainer || !cards || !prevBtn || !nextBtn || !progressIndicator) {
+    return;
+  }
+
   let cardWidth = cards[0].offsetWidth;  // Ширина одного блока
   let cardMarginRight = parseFloat(getComputedStyle(cards[0]).marginRight);  // Правый отступ
   let scrollAmount = cardWidth + cardMarginRight;  // Общая длина прокрутки одного блока
@@ -548,6 +680,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const button = document.getElementById('index-top__content-bottom__btn');
   const contentInfo = document.getElementById('index-top__content-bottom');
 
+  if (!button || !contentInfo) {
+    return;
+  }
+
   // Получаем начальную высоту из CSS
   const computedStyle = getComputedStyle(contentInfo);
   const initialHeight = parseInt(computedStyle.height); // Преобразуем в число
@@ -577,6 +713,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollContainer = document.querySelector('.index-blog__content-bottom__blocks');
   const cards = document.querySelectorAll('.index-blog__content-bottom__blocks-block');
   const progressIndicator = document.querySelector('.index-blog__content-bottom__indicator-progress');
+
+  if (!scrollContainer || !cards || !progressIndicator) {
+    return;
+  }
 
   let cardWidth = cards[0].offsetWidth;  // Ширина одного блока
   let cardMarginRight = parseFloat(getComputedStyle(cards[0]).marginRight);  // Правый отступ
@@ -626,6 +766,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollContainer = document.querySelector('.tvAndElectronics-popular__content-scroll');
   const cards = document.querySelectorAll('.tvAndElectronics-popular__content-scroll__cards .product-card');
   const progressIndicator = document.querySelector('.tvAndElectronics-popular__content-indicator__progress');
+
+  if (!scrollContainer || !cards || !progressIndicator) {
+    return;
+  }
 
   let cardWidth = cards[0].offsetWidth;  // Ширина одного блока
   let cardMarginRight = parseFloat(getComputedStyle(cards[0]).marginRight);  // Правый отступ
@@ -706,6 +850,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const minPriceInput = document.getElementById('minPriceInput');
   const maxPriceInput = document.getElementById('maxPriceInput');
   const sliderTrack = document.querySelector('.price-slider-track');
+
+  if (!minSlider || !maxSlider || !minPriceInput || !maxPriceInput || !sliderTrack) {
+      return;
+  }
+
   const minGap = 10000; // Минимальный разрыв между значениями
   const minPrice = 50000; // Минимальная цена
   const maxPrice = 250000; // Максимальная цена
@@ -779,6 +928,10 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener("DOMContentLoaded", function() {
   // Находим все нужные элементы
   const filterBlocks = document.querySelectorAll('.catalog-content__products-bottom__filter-block');
+
+  if (!filterBlocks) {
+    return;
+  }
 
   filterBlocks.forEach(filterBlock => {
     const topBlock = filterBlock.querySelector('.catalog-content__products-bottom__filter-block__top');
@@ -855,6 +1008,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const sortingButton = document.querySelector('.catalog-content__products-bottom__cards-top__sorting-btn');
   const sortingLinks = document.querySelectorAll('.catalog-content__products-bottom__cards-top__sorting-block a');
 
+  if (!sortingElement || !sortingButton || !sortingLinks) {
+    return;
+  }
+
   // Добавляем обработчик на кнопку
   sortingButton.addEventListener('click', () => {
     sortingElement.classList.toggle('active'); // Добавляем или убираем класс active при клике
@@ -877,6 +1034,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const filterBlock = document.querySelector('.catalog-content__products-bottom__filter');
   const body = document.body; // Получаем body для управления скроллом
 
+  if (!filterButton || !closeButton || !filterBlock) {
+    return;
+  }
+
   // Обработчик нажатия на кнопку "Фильтр"
   filterButton.addEventListener('click', () => {
     filterBlock.classList.add('active');
@@ -896,6 +1057,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const sortingElement = document.querySelector('.catalog-content__products-mobile__filter-sorting');
   const sortingButton = document.querySelector('.catalog-content__products-mobile__filter-sorting__btn');
   const sortingLinks = document.querySelectorAll('.catalog-content__products-mobile__filter-sorting__block a');
+
+  if (!sortingElement || !sortingButton || !sortingLinks) {
+    return;
+  }
 
   // Добавляем обработчик на кнопку
   sortingButton.addEventListener('click', () => {
@@ -920,6 +1085,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const scrollContainer = document.querySelector('.productCard-hero__content-images__container-scroll');
   const imageButtons = document.querySelectorAll('.productCard-hero__content-images__container-scroll button');
   const mainImageContainer = document.querySelector('.productCard-hero__content-images__img-container img');
+
+  if (!prevButton || !nextButton || !scrollContainer || !imageButtons || !mainImageContainer) {
+    return;
+  }
 
   let scrollAmount = 0;
   const scrollStep = 100; // количество пикселей для скролла
@@ -1063,6 +1232,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const hoverBlock = document.getElementById('lower-link');
   const tooltip = document.getElementById('lower-descr');
 
+  if (!hoverBlock || !tooltip) {
+    return;
+  }
+
   // Функция для обновления позиции всплывающего текста
   function updateTooltipPosition(event) {
       const x = event.pageX + 10; // Смещение от курсора
@@ -1089,36 +1262,34 @@ document.addEventListener('DOMContentLoaded', () => {
 /* Катрочка товара - Выбор из списка "Выберите срок сервиса" */
 
 document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("dropdownButton").addEventListener("click", function(event) {
-      event.stopPropagation();
-      const dropdown = document.querySelector('.productCard-hero__content-purchase__bottom-choice__selection-dropdown');
-      const button = document.getElementById("dropdownButton");
+  const dropdown = document.querySelector('.productCard-hero__content-purchase__bottom-choice__selection-dropdown');
+  const button = document.getElementById("dropdownButton");
 
+  // Проверяем, существуют ли элементы на странице
+  if (dropdown && button) {
+    button.addEventListener("click", function(event) {
+      event.stopPropagation();
       dropdown.classList.toggle('active');
       button.classList.toggle('active');
-  });
+    });
 
-  window.onclick = function(event) {
-      const dropdown = document.querySelector('.productCard-hero__content-purchase__bottom-choice__selection-dropdown');
-      const button = document.getElementById("dropdownButton");
-
+    window.onclick = function(event) {
       // Закрываем выпадающий блок, если клик был вне dropdown
       if (!dropdown.contains(event.target) && event.target !== button) {
-          dropdown.classList.remove('active');
-          button.classList.remove('active');
+        dropdown.classList.remove('active');
+        button.classList.remove('active');
       }
-  }
+    }
 
-  // Функция выбора варианта
-  window.selectOption = function(element, option) {
+    // Функция выбора варианта
+    window.selectOption = function(element, option) {
       // Обновляем текст кнопки
       document.getElementById("dropdownButtonText").innerHTML = option;
 
       // Закрываем выпадающий список и снимаем класс active с кнопки
-      const dropdown = document.querySelector('.productCard-hero__content-purchase__bottom-choice__selection-dropdown');
-      const button = document.getElementById("dropdownButton");
       dropdown.classList.remove('active');
       button.classList.remove('active');
+    }
   }
 });
 
@@ -1129,6 +1300,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const productCards = document.querySelectorAll('.productCard-offers__content-scroll .product-card');
   const prevButton = document.getElementById('productCard-offers-btn-prev');
   const nextButton = document.getElementById('productCard-offers-btn-next');
+
+  if (!productList || !productCards || !prevButton || !nextButton) {
+    return;
+  }
 
   // Функция для получения ширины блока
   function getCardWidth() {
@@ -1210,6 +1385,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuCloseBtn = document.querySelector('.addReview__content-close');
   const body = document.body; // Получаем body
 
+  if (!menuMobile || !menuBtn || !menuCloseBtn) {
+    return;
+  }
+
   // Обработчик для открытия меню
   menuBtn.addEventListener('click', () => {
     menuMobile.classList.add('active');
@@ -1229,6 +1408,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const buttons = document.querySelectorAll('.productCard-info__content-nav button');
   const contentBottom = document.querySelector('.productCard-info__content-bottom');
   const contentSections = document.querySelectorAll('.productCard-info__content-bottom > div');
+
+  if (!buttons || !contentBottom || !contentSections) {
+    return;
+  }
 
   // Функция для смены активного блока и кнопки
   function setActive(button, target) {
@@ -1266,6 +1449,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevButton = document.getElementById('productCard-recommendations-btn-prev');
   const nextButton = document.getElementById('productCard-recommendations-btn-next');
   const progressBar = document.querySelector('.productCard-recommendations__content-indicator__progress');
+
+  if (!productList || !productCards || !prevButton || !nextButton || !progressBar) {
+    return;
+  }
 
   // Функция для получения ширины одного карточного блока
   function getCardWidth() {
@@ -1372,6 +1559,10 @@ document.addEventListener('click', function (event) {
   const mobileDescr = document.getElementById('productCard-info__content-nav-mobile-descr');
   const navBlock = document.querySelector('.productCard-info__content-nav');
 
+  if (!mobileButton || !mobileDescr || !navBlock) {
+    return;
+  }
+
   // Проверяем, существуют ли необходимые элементы на странице
   if (!mobileButton || !mobileDescr || !navBlock) {
     return; // Прерываем выполнение, если элементов нет
@@ -1415,6 +1606,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const nameInput = document.getElementById("addReview-name");
   const emailInput = document.getElementById("addReview-email");
   const telInput = document.getElementById("addReview-tel");
+
+  if (!form || !nameInput || !emailInput || !telInput) {
+    return;
+  }
 
   if (nameInput && emailInput && telInput && form) {
 
@@ -1569,6 +1764,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Получаем все элементы заголовков FAQ
   const faqHeaders = document.querySelectorAll('.warranty-questions__content-faq__item-header');
 
+  if (!faqHeaders) {
+    return;
+  }
+
   faqHeaders.forEach(header => {
     // Добавляем обработчик события клика на каждый заголовок
     header.addEventListener('click', function() {
@@ -1609,10 +1808,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  // Получаем все кнопки фильтрации
   const buttons = document.querySelectorAll('.blog-hero__content-btns button');
-  // Получаем все блоки
   const blocks = document.querySelectorAll('.blog-hero__content-blocks__block');
+
+  if (!buttons || !blocks) {
+    return;
+  }
 
   // Функция для фильтрации блоков
   function filterBlocks(keyword) {
@@ -1694,6 +1895,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const telInput = document.getElementById('blogPage-tel');
   const textArea = document.getElementById('blogPage-text');
 
+  if (!form || !nameInput || !emailInput || !telInput) {
+    return;
+  }
+
   // Функция для проверки email
   function validateEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1767,6 +1972,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollContainer = document.querySelector('.blogPage-articles__content-bottom__blocks');
   const cards = document.querySelectorAll('.blogPage-articles__content-bottom__blocks-block');
   const progressIndicator = document.querySelector('.blogPage-articles__content-bottom__indicator-progress');
+
+  if (!scrollContainer || !cards || !progressIndicator) {
+    return;
+  }
 
   let cardWidth = cards[0].offsetWidth;  // Ширина одного блока
   let cardMarginRight = parseFloat(getComputedStyle(cards[0]).marginRight);  // Правый отступ
@@ -1846,11 +2055,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('.payment-hero__content-peyment__form');
-  const inputs = form.querySelectorAll('input[required]');
   const telInput = document.getElementById('payment-tel');
   const emailInput = document.getElementById('payment-email');
   const nameInput = document.getElementById('payment-firstName');
   const secondNameInput = document.getElementById('payment-secondName');
+
+  // Проверяем, существуют ли все необходимые элементы
+  if (!form || !telInput || !emailInput || !nameInput || !secondNameInput) {
+    return; // Если хотя бы один элемент отсутствует, завершаем выполнение
+  }
+
+  const inputs = form.querySelectorAll('input[required]');
 
   // Ограничение на ввод только букв в поле "Имя"
   nameInput.addEventListener('input', function (e) {
@@ -1936,6 +2151,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const scrollContainerCards = document.querySelector('.productComparison-hero__content-cards');
   const scrollContainerList = document.querySelector('.productComparison-hero__content-info__item-bottom');
 
+  if (!scrollContainerCards || !scrollContainerCards) {
+    return;
+  }
+
   // Функция для плавной горизонтальной прокрутки
   function smoothScroll(scrollContainer, delta) {
     let start = scrollContainer.scrollLeft;
@@ -1995,13 +2214,16 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-
-
 /* Сравнение товаров - открытие блоков */
 
 document.addEventListener('DOMContentLoaded', function() {
   // Получаем все элементы заголовков FAQ
   const faqHeaders = document.querySelectorAll('.productComparison-hero__content-info__item-header');
+
+  if (!faqHeaders) {
+    return;
+  }
+
 
   faqHeaders.forEach(header => {
     // Добавляем обработчик события клика на каждый заголовок
@@ -2039,6 +2261,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const personalAccountBlock = document.querySelector('.personalAccount-hero__content-btns');
   const personalAccountBtn = document.getElementById('personalAccount-btns-mobile');
   let isActive = false; // Флаг для отслеживания активного состояния
+
+  if (!personalAccountBlock || !personalAccountBtn) {
+    return;
+  }
 
   // Функция для переключения классов active
   function toggleActive() {
@@ -2167,21 +2393,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('.personalAccount-hero__content-bloks__data-form');
-  const inputs = form.querySelectorAll('input[required]');
+  const inputs = form ? form.querySelectorAll('input[required]') : null;
+
+  if (!form || !inputs || inputs.length === 0) {
+    return;
+  }
 
   // Ограничение для ввода только букв в поле "Имя"
   const firstNameInput = document.getElementById('personalAccount-firstName');
-  firstNameInput.addEventListener('input', function (e) {
-    this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
-    validateField(firstNameInput); // Проверяем поле при вводе
-  });
+  if (firstNameInput) {
+    firstNameInput.addEventListener('input', function (e) {
+      this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+      validateField(firstNameInput); // Проверяем поле при вводе
+    });
+  }
 
   // Ограничение для ввода только букв в поле "Фамилия"
   const secondNameInput = document.getElementById('personalAccount-secondName');
-  secondNameInput.addEventListener('input', function (e) {
-    this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
-    validateField(secondNameInput); // Проверяем поле при вводе
-  });
+  if (secondNameInput) {
+    secondNameInput.addEventListener('input', function (e) {
+      this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, '');
+      validateField(secondNameInput); // Проверяем поле при вводе
+    });
+  }
 
   // Функция для проверки полей и окрашивания бордера
   function validateField(input) {
@@ -2220,7 +2454,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('.personalAccount-hero__content-bloks__adress-form');
-  const inputs = form.querySelectorAll('input[required]');
+  const inputs = form ? form.querySelectorAll('input[required]') : null;
+
+  if (!form || !inputs || inputs.length === 0) {
+    return;
+  }
 
   // Ограничение для ввода только букв в поле "Имя"
   const firstNameInput = document.getElementById('personalAccount-adress-firstName');
